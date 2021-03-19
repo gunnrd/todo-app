@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,38 +14,41 @@
     android:clickable="true"
     android:focusable="true">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/cardLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tasksCardName"
+            android:id="@+id/cardListName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Task title"
-            android:textSize="15sp"
-            android:layout_marginStart="30dp"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:text="Title"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"/>
 
         <ImageButton
-            android:id="@+id/tasksCardDeleteButton"
+            android:id="@+id/cardDeleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@color/white"
+            android:contentDescription="@string/delete_task_list"
             app:srcCompat="@android:drawable/ic_menu_delete"
-            android:layout_alignParentEnd="true"
-            android:layout_alignEnd="@+id/tasksCardName"
-            android:layout_marginTop="10dp"
-            android:contentDescription="@string/delete_task_list"/>
+            android:layout_marginStart="300dp"
+            android:layout_marginEnd="20dp"/>
 
         <ProgressBar
-            android:id="@+id/tasksCardProgressBar"
+            android:id="@+id/cardProgressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="60dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="30dp"/>
-    </RelativeLayout>
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"/>
+
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>
