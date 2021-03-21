@@ -6,12 +6,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/listHeader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.10"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/teal_200">
+
+        <TextView
+            android:id="@+id/listTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="30sp"
+            android:textAlignment="center"
+            android:text="@string/header_title"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/taskItemsScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/listHeader">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/taskItemsRecyclerView"
@@ -20,7 +44,7 @@
     </ScrollView>
 
     <EditText
-        android:id="@+id/taskTitle"
+        android:id="@+id/editTextTaskText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Enter new task"
@@ -29,20 +53,35 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <Button
-        android:id="@+id/addNewItemButton"
+        android:id="@+id/buttonAddNewItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/deleteCheckedItems" />
+        app:layout_constraintStart_toEndOf="@+id/editTextTaskText"
+        android:layout_marginEnd="2dp"/>
 
     <Button
-        android:id="@+id/deleteCheckedItems"
+        android:id="@+id/buttonDeleteCheckedItems"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/buttonAddNewTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:fabSize="auto"
+        android:clickable="true"
+        android:focusable="true"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:contentDescription="@string/add_new_task_item"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

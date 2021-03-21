@@ -17,6 +17,15 @@ class AllTasksAdapter (private val taskNames:MutableList<TaskListName>) : Recycl
             .inflate(R.layout.all_tasks_layout, parent, false))
     }
 
+    override fun getItemCount(): Int = taskNames.size
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val taskName = taskNames[position]
+        holder.itemView.apply {
+            cardListName.text = taskName.taskListName
+        }
+    }
+
     fun addNewList(taskList: TaskListName) {
         taskNames.add(taskList)
         notifyItemInserted(taskNames.size - 1)
@@ -27,12 +36,4 @@ class AllTasksAdapter (private val taskNames:MutableList<TaskListName>) : Recycl
         //TODO Add delete list function
     }
 
-    override fun getItemCount(): Int = taskNames.size
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val taskName = taskNames[position]
-        holder.itemView.apply {
-            cardListName.text = taskName.taskListName
-        }
-    }
 }
