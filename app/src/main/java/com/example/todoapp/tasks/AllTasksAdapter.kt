@@ -32,8 +32,10 @@ class AllTasksAdapter (private val taskNames:MutableList<TaskListName>) : Recycl
         notifyDataSetChanged()
     }
 
-    fun deleteList() {
-        //TODO Add delete list function
+    fun deleteList(index: Int) {
+        //TODO Get index
+        taskNames.removeAt(index)
+        notifyItemRemoved(index)
     }
 
 }

@@ -50,27 +50,6 @@
             android:layout_height="wrap_content" />
     </ScrollView>
 
-    <EditText
-        android:id="@+id/editTextAddNewList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:textSize="20sp"
-        android:hint="New list"
-        android:inputType="text"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"/>
-
-    <Button
-        android:id="@+id/buttonAddNewList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/editTextAddNewList"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="Save"
-        android:layout_marginStart="20dp"/>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/buttonAddNewTaskList"
         android:layout_width="wrap_content"

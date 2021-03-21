@@ -38,6 +38,7 @@ class TaskItemsAdapter(private val taskItems:MutableList<TaskItem>) : RecyclerVi
     fun addNewItem(taskItem: TaskItem) {
         taskItems.add(taskItem)
         notifyItemInserted(taskItems.size - 1)
+        notifyDataSetChanged()
     }
 
     fun deleteItems() {
@@ -45,6 +46,11 @@ class TaskItemsAdapter(private val taskItems:MutableList<TaskItem>) : RecyclerVi
             taskItem ->  taskItem.isChecked
         }
         notifyDataSetChanged()
+    }
+
+    private fun setProgress() {
+        val totalProgress = taskItems.size
+        var progressValue = 100 / totalProgress
     }
 
     private fun strikeThroughItem(itemText: TextView, isChecked: Boolean) {

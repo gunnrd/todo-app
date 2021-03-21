@@ -1,8 +1,11 @@
 package com.example.todoapp
 
 import android.os.Bundle
+import android.widget.EditText
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoapp.tasks.TaskItemsAdapter
 import com.example.todoapp.tasks.data.TaskItem
@@ -16,30 +19,40 @@ class TaskListActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_list)
 
-        editTextTaskText.isVisible = false
-        buttonAddNewItem.isVisible = false
-        buttonDeleteCheckedItems.isVisible = false
-
         itemAdapter = TaskItemsAdapter(mutableListOf())
 
         taskItemsRecyclerView.adapter = itemAdapter
         taskItemsRecyclerView.layoutManager = LinearLayoutManager(this)
 
         buttonAddNewTask.setOnClickListener {
-            editTextTaskText.isVisible = true
-            buttonAddNewItem.isVisible = true
+            addNewItemDialog()
         }
 
-        buttonAddNewItem.setOnClickListener {
-            val itemText = editTextTaskText.text.toString()
-            if(itemText.isNotEmpty()) {
-                val newText = TaskItem(itemText)
-                itemAdapter.addNewItem(newText)
-                editTextTaskText.text.clear()
-                editTextTaskText.isVisible = false
-                buttonAddNewItem.isVisible = false
-            }
+        val title = intent.getStringExtra(TITLE)
+        val titleHeader = findViewById<TextView>(R.id.listTitle).apply {
+            text = title
         }
     }
 
+    private fun progress() {
+        //TODO Set progress to progressbar
+        var progressBar = findViewById<ProgressBar>(R.id.itemsProgressBar)
+
+    }
+
+    private fun addNewItemDialog() {
+        val alert = AlertDialog.Builder(this)
+        val newItem = EditText(this)
+
+        alert.setTitle("Add new item")
+        alert.setMessage("Enter task name")
+        alert.setView(newItem)
+
+        alert.setPositiveButton("Save") { dialog, positiveButton ->
+            val listItem = newItem.text.toString()
+            val item = TaskItem(listItem, false)
+            itemAdapter.addNewItem(item)
+        }
+        alert.show()
+    }
 }
