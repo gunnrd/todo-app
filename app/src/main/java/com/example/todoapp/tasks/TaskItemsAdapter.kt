@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.todoapp.R
-import com.example.todoapp.tasks.data.TaskItem
+import com.example.todoapp.tasks.data.TaskItems
 import kotlinx.android.synthetic.main.task_items_layout.view.*
 
-class TaskItemsAdapter(private val taskItems:MutableList<TaskItem>) : RecyclerView.Adapter<TaskItemsAdapter.ViewHolder>() {
+class TaskItemsAdapter(private val taskItems:MutableList<TaskItems>) : RecyclerView.Adapter<TaskItemsAdapter.ViewHolder>() {
 
     class ViewHolder(itemsView: View): RecyclerView.ViewHolder(itemsView)
+
+    private var counterCheckedItems:Float = 0.0F
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context)
@@ -26,18 +28,30 @@ class TaskItemsAdapter(private val taskItems:MutableList<TaskItem>) : RecyclerVi
 
         holder.itemView.apply {
             taskText.text = task.taskName
+
             checkBoxTaskDone.isChecked = task.isChecked
             strikeThroughItem(taskText, task.isChecked)
             checkBoxTaskDone.setOnCheckedChangeListener { _, isChecked ->
                 strikeThroughItem(taskText, isChecked)
                 task.isChecked = !task.isChecked
+
+                if (checkBoxTaskDone.isChecked) {
+                    counterCheckedItems += 1
+                    println("counterCheckedItems: $counterCheckedItems")
+                    calculateProgress()
+                } else {
+                    counterCheckedItems -= 1
+                    println("counterCheckedItems: $counterCheckedItems")
+                    calculateProgress()
+                }
             }
+
         }
     }
 
-    fun addNewItem(taskItem: TaskItem) {
-        taskItems.add(taskItem)
-        notifyItemInserted(taskItems.size - 1)
+    fun addNewItem(taskItems: TaskItems) {
+        this.taskItems.add(taskItems)
+        notifyItemInserted(this.taskItems.size - 1)
         notifyDataSetChanged()
     }
 
@@ -48,9 +62,15 @@ class TaskItemsAdapter(private val taskItems:MutableList<TaskItem>) : RecyclerVi
         notifyDataSetChanged()
     }
 
-    private fun setProgress() {
-        val totalProgress = taskItems.size
-        var progressValue = 100 / totalProgress
+    fun calculateProgress(): Int {
+
+        val totalProgressBar = taskItems.size
+        println("totalProgressBar: $totalProgressBar")
+        val progressValue = (counterCheckedItems/totalProgressBar) * 100
+        println("progressValue: $progressValue")
+
+        //notifyDataSetChanged()
+        return progressValue.toInt()
     }
 
     private fun strikeThroughItem(itemText: TextView, isChecked: Boolean) {
@@ -60,6 +80,5 @@ class TaskItemsAdapter(private val taskItems:MutableList<TaskItem>) : RecyclerVi
             itemText.paintFlags = itemText.paintFlags and STRIKE_THRU_TEXT_FLAG.inv()
         }
     }
-
 
 }

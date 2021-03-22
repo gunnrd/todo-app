@@ -3,7 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/taskItemsToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/ThemeOverlay.AppCompat.Light" />
 
     <LinearLayout
         android:id="@+id/listHeader"
@@ -13,8 +23,9 @@
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/teal_200">
+        app:layout_constraintTop_toBottomOf="@id/taskItemsToolbar"
+        android:background="@color/teal_200"
+        >
 
         <TextView
             android:id="@+id/listTitle"
@@ -23,7 +34,7 @@
             android:layout_marginTop="20dp"
             android:textSize="30sp"
             android:textAlignment="center"
-            android:text="@string/header_title"/>
+            android:text="@string/header_title" />
 
         <ProgressBar
             android:id="@+id/itemsProgressBar"
@@ -35,7 +46,7 @@
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="20dp"
             android:max="100"
-            android:progress="0"/>
+            android:progress="0" />
 
     </LinearLayout>
 
@@ -46,12 +57,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/listHeader">
+        app:layout_constraintTop_toBottomOf="@id/listHeader"
+        >
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/taskItemsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -67,6 +79,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

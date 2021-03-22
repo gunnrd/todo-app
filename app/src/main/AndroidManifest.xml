@@ -19,8 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TaskListActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".TaskListActivity" />
     </application>
 
 </manifest>

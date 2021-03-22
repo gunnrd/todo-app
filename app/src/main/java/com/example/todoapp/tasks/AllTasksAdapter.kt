@@ -1,41 +1,55 @@
 package com.example.todoapp.tasks
 
+import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.todoapp.R
-import com.example.todoapp.tasks.data.TaskListName
+import com.example.todoapp.TaskListActivity
+import com.example.todoapp.databinding.AllTasksLayoutBinding
+import com.example.todoapp.tasks.data.TaskList
 import kotlinx.android.synthetic.main.all_tasks_layout.view.*
 
-class AllTasksAdapter (private val taskNames:MutableList<TaskListName>) : RecyclerView.Adapter<AllTasksAdapter.ViewHolder>() {
+class AllTasksAdapter (private val tasks:MutableList<TaskList>) : RecyclerView.Adapter<AllTasksAdapter.ViewHolder>() {
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    inner class ViewHolder(val binding: AllTasksLayoutBinding): RecyclerView.ViewHolder(binding.root) {
+        val context = binding.root.context
+        init {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context)
-            .inflate(R.layout.all_tasks_layout, parent, false))
-    }
-
-    override fun getItemCount(): Int = taskNames.size
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val taskName = taskNames[position]
-        holder.itemView.apply {
-            cardListName.text = taskName.taskListName
+            itemView.setOnClickListener {
+                val titleHeader = binding.root.cardListName
+                val intent = Intent(context, TaskListActivity::class.java).apply {
+                    putExtra("TITLE", titleHeader.text)
+                }
+                context.startActivity(intent)
+            }
         }
     }
 
-    fun addNewList(taskList: TaskListName) {
-        taskNames.add(taskList)
-        notifyItemInserted(taskNames.size - 1)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(AllTasksLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    }
+
+    override fun getItemCount(): Int = tasks.size
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val taskName = tasks[position]
+        holder.itemView.apply {
+            cardListName.text = taskName.taskListName
+        }
+
+    }
+
+    fun addNewList(taskList: TaskList) {
+        tasks.add(taskList)
+        notifyItemInserted(tasks.size - 1)
         notifyDataSetChanged()
     }
 
     fun deleteList(index: Int) {
         //TODO Get index
-        taskNames.removeAt(index)
+        tasks.removeAt(index)
         notifyItemRemoved(index)
+        notifyDataSetChanged()
     }
 
 }

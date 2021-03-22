@@ -3,12 +3,11 @@ package com.example.todoapp
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoapp.tasks.TaskItemsAdapter
-import com.example.todoapp.tasks.data.TaskItem
+import com.example.todoapp.tasks.data.TaskItems
 import kotlinx.android.synthetic.main.activity_task_list.*
 
 class TaskListActivity : AppCompatActivity(){
@@ -19,6 +18,10 @@ class TaskListActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_list)
 
+        setSupportActionBar(taskItemsToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
         itemAdapter = TaskItemsAdapter(mutableListOf())
 
         taskItemsRecyclerView.adapter = itemAdapter
@@ -28,18 +31,22 @@ class TaskListActivity : AppCompatActivity(){
             addNewItemDialog()
         }
 
-        val title = intent.getStringExtra(TITLE)
-        val titleHeader = findViewById<TextView>(R.id.listTitle).apply {
-            text = title
-        }
+        listTitle.text = intent.getStringExtra("TITLE")
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
     }
 
     private fun progress() {
-        //TODO Set progress to progressbar
-        var progressBar = findViewById<ProgressBar>(R.id.itemsProgressBar)
-
+        //TODO Set progress value to progressbars
+        val progressBarItems = findViewById<ProgressBar>(R.id.itemsProgressBar)
+        val progressBarList = findViewById<ProgressBar>(R.id.cardProgressBar)
+        progressBarItems.progress = itemAdapter.calculateProgress()
+        progressBarList.progress = itemAdapter.calculateProgress()
     }
-
+    
     private fun addNewItemDialog() {
         val alert = AlertDialog.Builder(this)
         val newItem = EditText(this)
@@ -50,7 +57,7 @@ class TaskListActivity : AppCompatActivity(){
 
         alert.setPositiveButton("Save") { dialog, positiveButton ->
             val listItem = newItem.text.toString()
-            val item = TaskItem(listItem, false)
+            val item = TaskItems(listTitle.toString(), listItem, 0, false)
             itemAdapter.addNewItem(item)
         }
         alert.show()
