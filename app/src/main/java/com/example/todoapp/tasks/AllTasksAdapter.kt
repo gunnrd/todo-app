@@ -34,9 +34,8 @@ class AllTasksAdapter (private val tasks:MutableList<TaskList>) : RecyclerView.A
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val taskName = tasks[position]
         holder.itemView.apply {
-            cardListName.text = taskName.taskListName
+            cardListName.text = taskName.listTitle
         }
-
     }
 
     fun addNewList(taskList: TaskList) {

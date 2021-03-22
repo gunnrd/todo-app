@@ -11,16 +11,16 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 
+lateinit var firebaseDatabase: DatabaseReference
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var taskAdapter: AllTasksAdapter
 
-    private lateinit var reference: DatabaseReference
-    private var firebaseDatabase = FirebaseDatabase.getInstance().reference
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        firebaseDatabase = FirebaseDatabase.getInstance().reference
 
         taskAdapter = AllTasksAdapter(mutableListOf())
 
@@ -30,11 +30,10 @@ class MainActivity : AppCompatActivity() {
         buttonAddNewTaskList.setOnClickListener {
             addNewListDialog()
         }
-
-        firebaseDatabase.child("hei").setValue("test")
-            }
+    }
 
     private fun addNewListDialog() {
+
         val alert = AlertDialog.Builder(this)
         val newListTitle = EditText(this)
 
@@ -42,11 +41,24 @@ class MainActivity : AppCompatActivity() {
         alert.setMessage("Enter list name")
         alert.setView(newListTitle)
 
-        alert.setPositiveButton("Save") { dialog, positiveButton ->
-            val listTitle = newListTitle.text.toString()
-            val todo = TaskList(listTitle, 0)
-            taskAdapter.addNewList(todo)
+        alert.setPositiveButton("Save") { dialog, _ ->
+            val taskList = TaskList.create()
+            val newList = firebaseDatabase.child(Constants.FIREBASE_LIST).push()
+
+            taskList.objectId = newList.key
+            taskList.listTitle = newListTitle.text.toString()
+            taskList.progress = 0
+            newList.setValue(taskList)
+
+            val id = taskList.objectId.toString()
+            val todoList = TaskList(id, newListTitle.text.toString(), 0)
+            taskAdapter.addNewList(todoList)
+            dialog.dismiss()
         }
         alert.show()
+    }
+
+    object Constants {
+        @JvmStatic val FIREBASE_LIST: String = "To do lists"
     }
 }
