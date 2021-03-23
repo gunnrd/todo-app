@@ -55,9 +55,9 @@ class TaskListActivity : AppCompatActivity(){
         alert.setMessage("Enter task name")
         alert.setView(newItem)
 
-        alert.setPositiveButton("Save") { dialog, positiveButton ->
+        alert.setPositiveButton("Save") { _, _ ->
             val listItem = newItem.text.toString()
-            val item = TaskItems(listTitle.toString(), listItem, 0, false)
+            val item = TaskItems(listItem, 0, false)
             itemAdapter.addNewItem(item)
         }
         alert.show()

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,10 +16,10 @@ import com.google.firebase.database.*
 
 class MainActivity : AppCompatActivity() {
 
-    private var recyclerView: RecyclerView? = null
+    private lateinit var recyclerView: RecyclerView
     private lateinit var reference: DatabaseReference
-    private var todoList: MutableList<TaskList>? = null
-    private lateinit var adapter: AllTasksAdapter
+    private var taskList: MutableList<TaskList>? = null
+    private var database = FirebaseDatabase.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,77 +27,71 @@ class MainActivity : AppCompatActivity() {
 
         val buttonAddNewList = findViewById<View>(R.id.buttonAddNewTaskList) as FloatingActionButton
         recyclerView = findViewById<View>(R.id.allTasksRecyclerView) as RecyclerView
-        reference = FirebaseDatabase.getInstance().reference
+        reference = database.child("To do lists")
 
-        todoList = mutableListOf()
-        adapter = AllTasksAdapter(this, todoList!!)
-        recyclerView!!.adapter = adapter
-        recyclerView!!.layoutManager = LinearLayoutManager(this)
-        reference.orderByKey().addListenerForSingleValueEvent(listener)
+        taskList = mutableListOf()
+        this.recyclerView.adapter = AllTasksAdapter(taskList!!, this::deleteListClick)
+        this.recyclerView.layoutManager = LinearLayoutManager(this)
+
+        getDataFromFirebase()
 
         buttonAddNewList.setOnClickListener {
             addNewListDialog()
         }
     }
 
-    private var listener: ValueEventListener = object : ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            addDataToList(dataSnapshot)
-        }
+    private fun deleteListClick(taskList: TaskList) {
+        taskList.listTitle?.let { reference.child(it).removeValue() }
+    }
 
-        override fun onCancelled(databaseError: DatabaseError) {
-            Log.w("MainActivity", "loadItem:onCancelled", databaseError.toException())
-        }
-
-        private fun addDataToList(dataSnapshot: DataSnapshot) {
-            val items = dataSnapshot.children.iterator()
-
-            if (items.hasNext()) {
-                val todoListIndex = items.next()
-                val itemsIterator = todoListIndex.children.iterator()
-
-                while (itemsIterator.hasNext()) {
-                    val currentItem = itemsIterator.next()
-                    val taskList = TaskList.create()
-                    val map = currentItem.value as HashMap<*, *>
-
-                    taskList.objectId = currentItem.key
-                    taskList.listTitle = map["listTitle"] as String
-                    taskList.progress = map["progress"] as Long
-                    todoList!!.add(taskList)
+    private fun getDataFromFirebase() {
+        reference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val allLists = taskList
+                val adapter = recyclerView.adapter
+                allLists?.clear()
+                for (data in snapshot.children) {
+                    val list = data.getValue(TaskList::class.java)
+                    recyclerView.adapter = adapter
+                    if (list != null) {
+                        allLists?.add(list)
+                    }
                 }
             }
-            adapter.notifyDataSetChanged()
-        }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("MainActivity", "loadItem:onCancelled database error", error.toException())
+            }
+        })
     }
 
     private fun addNewListDialog() {
 
         val alert = AlertDialog.Builder(this)
-        val newListTitle = EditText(this)
+        val editTextListTitle = EditText(this)
 
         alert.setTitle("Add new to do list")
         alert.setMessage("Enter list name")
-        alert.setView(newListTitle)
+        alert.setView(editTextListTitle)
 
         alert.setPositiveButton("Save") { dialog, _ ->
-            val taskList = TaskList.create()
-            val newListKey = reference.child(Constants.FIREBASE_LIST).push()
+            val newListTitle = editTextListTitle.text.toString().trim()
+            val taskList = TaskList(newListTitle)
+            val listId = reference.push().key
 
-            taskList.objectId = newListKey.key
-            taskList.listTitle = newListTitle.text.toString()
-            taskList.progress = 0
-            newListKey.setValue(taskList)
-
-            val id = taskList.objectId.toString()
-            val todoList = TaskList(id, newListTitle.text.toString(), 0)
-            adapter.addNewList(todoList)
+            when {
+                newListTitle.isEmpty() ->
+                    Toast.makeText(this, "Enter list title", Toast.LENGTH_SHORT).show()
+                listId == null ->
+                    Toast.makeText(this, "Error saving list. List id is null", Toast.LENGTH_SHORT).show()
+                listId.contentEquals(newListTitle) ->
+                    Toast.makeText(this, "List name already exists. Enter another name.", Toast.LENGTH_SHORT).show()
+                else -> {
+                 reference.child(newListTitle).setValue(taskList)
+                }
+            }
             dialog.dismiss()
         }
         alert.show()
-    }
-
-    object Constants {
-        @JvmStatic val FIREBASE_LIST: String = "To do lists"
     }
 }
