@@ -12,25 +12,23 @@ import kotlinx.android.synthetic.main.task_items_layout.view.*
 
 class TaskItemsAdapter(private val taskItems:MutableList<TaskItems>) : RecyclerView.Adapter<TaskItemsAdapter.ViewHolder>() {
 
-    class ViewHolder(itemsView: View): RecyclerView.ViewHolder(itemsView)
+    private var counterCheckedItems: Float = 0.0F
 
-    private var counterCheckedItems:Float = 0.0F
+    class ViewHolder(itemsView: View): RecyclerView.ViewHolder(itemsView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context)
-                .inflate(R.layout.task_items_layout, parent, false))
+            .inflate(R.layout.task_items_layout, parent, false))
     }
-
-    override fun getItemCount(): Int = taskItems.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val task = taskItems[position]
 
         holder.itemView.apply {
             taskText.text = task.taskName
-
             checkBoxTaskDone.isChecked = task.isChecked
             strikeThroughItem(taskText, task.isChecked)
+
             checkBoxTaskDone.setOnCheckedChangeListener { _, isChecked ->
                 strikeThroughItem(taskText, isChecked)
                 task.isChecked = !task.isChecked
@@ -45,9 +43,10 @@ class TaskItemsAdapter(private val taskItems:MutableList<TaskItems>) : RecyclerV
                     calculateProgress()
                 }
             }
-
         }
     }
+
+    override fun getItemCount(): Int = taskItems.size
 
     fun addNewItem(taskItems: TaskItems) {
         this.taskItems.add(taskItems)
@@ -63,13 +62,11 @@ class TaskItemsAdapter(private val taskItems:MutableList<TaskItems>) : RecyclerV
     }
 
     fun calculateProgress(): Int {
-
         val totalProgressBar = taskItems.size
         println("totalProgressBar: $totalProgressBar")
         val progressValue = (counterCheckedItems/totalProgressBar) * 100
         println("progressValue: $progressValue")
 
-        //notifyDataSetChanged()
         return progressValue.toInt()
     }
 
@@ -80,5 +77,4 @@ class TaskItemsAdapter(private val taskItems:MutableList<TaskItems>) : RecyclerV
             itemText.paintFlags = itemText.paintFlags and STRIKE_THRU_TEXT_FLAG.inv()
         }
     }
-
 }

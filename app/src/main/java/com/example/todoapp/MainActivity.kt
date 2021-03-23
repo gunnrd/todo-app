@@ -13,13 +13,12 @@ import com.example.todoapp.tasks.data.TaskList
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.*
 
-lateinit var firebaseDatabase: DatabaseReference
-var todoList: MutableList<TaskList>? = null
-lateinit var adapter: AllTasksAdapter
-
 class MainActivity : AppCompatActivity() {
 
     private var recyclerView: RecyclerView? = null
+    private lateinit var reference: DatabaseReference
+    private var todoList: MutableList<TaskList>? = null
+    private lateinit var adapter: AllTasksAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,12 +26,13 @@ class MainActivity : AppCompatActivity() {
 
         val buttonAddNewList = findViewById<View>(R.id.buttonAddNewTaskList) as FloatingActionButton
         recyclerView = findViewById<View>(R.id.allTasksRecyclerView) as RecyclerView
-        firebaseDatabase = FirebaseDatabase.getInstance().reference
+        reference = FirebaseDatabase.getInstance().reference
+
         todoList = mutableListOf()
         adapter = AllTasksAdapter(this, todoList!!)
         recyclerView!!.adapter = adapter
         recyclerView!!.layoutManager = LinearLayoutManager(this)
-        firebaseDatabase.orderByKey().addListenerForSingleValueEvent(listener)
+        reference.orderByKey().addListenerForSingleValueEvent(listener)
 
         buttonAddNewList.setOnClickListener {
             addNewListDialog()
@@ -57,13 +57,13 @@ class MainActivity : AppCompatActivity() {
 
                 while (itemsIterator.hasNext()) {
                     val currentItem = itemsIterator.next()
-                    val todoItem = TaskList.create()
+                    val taskList = TaskList.create()
                     val map = currentItem.value as HashMap<*, *>
 
-                    todoItem.objectId = currentItem.key
-                    todoItem.listTitle = map["listTitle"] as String
-                    todoItem.progress = map["progress"] as Long
-                    todoList!!.add(todoItem)
+                    taskList.objectId = currentItem.key
+                    taskList.listTitle = map["listTitle"] as String
+                    taskList.progress = map["progress"] as Long
+                    todoList!!.add(taskList)
                 }
             }
             adapter.notifyDataSetChanged()
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
         alert.setPositiveButton("Save") { dialog, _ ->
             val taskList = TaskList.create()
-            val newListKey = firebaseDatabase.child(Constants.FIREBASE_LIST).push()
+            val newListKey = reference.child(Constants.FIREBASE_LIST).push()
 
             taskList.objectId = newListKey.key
             taskList.listTitle = newListTitle.text.toString()
