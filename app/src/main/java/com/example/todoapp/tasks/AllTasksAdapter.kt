@@ -22,9 +22,9 @@ class AllTasksAdapter (context: Context, private val taskList:MutableList<TaskLi
 
     fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
-        val listId: String = todoList.get(position).objectId as String
-        val listTitle: String = todoList.get(position).listTitle as String
-        val progress: Int = todoList.get(position).progress as Int
+        val listId: String = todoList[position].objectId as String
+        val listTitle: String = todoList[position].listTitle as String
+        val progress: Int = todoList[position].progress as Int
 
         val view: View
         val viewHolder: CardHolder
@@ -53,9 +53,9 @@ class AllTasksAdapter (context: Context, private val taskList:MutableList<TaskLi
     }
 
     private class CardHolder(card: View?) {
-        val title: TextView = card!!.findViewById<TextView>(R.id.cardListName) as TextView
-        val progress: ProgressBar = card!!.findViewById<ProgressBar>(R.id.cardProgressBar) as ProgressBar
-        val delete: ImageButton = card!!.findViewById<ImageButton>(R.id.cardDeleteButton) as ImageButton
+        val title: TextView = card!!.findViewById(R.id.cardListName) as TextView
+        val progress: ProgressBar = card!!.findViewById(R.id.cardProgressBar) as ProgressBar
+        val delete: ImageButton = card!!.findViewById(R.id.cardDeleteButton) as ImageButton
     }
 
     inner class ViewHolder(private val binding: AllTasksLayoutBinding): RecyclerView.ViewHolder(binding.root) {

@@ -25,19 +25,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val fab = findViewById<View>(R.id.buttonAddNewTaskList) as FloatingActionButton
+        val buttonAddNewList = findViewById<View>(R.id.buttonAddNewTaskList) as FloatingActionButton
         recyclerView = findViewById<View>(R.id.allTasksRecyclerView) as RecyclerView
-
-        fab.setOnClickListener {
-            addNewListDialog()
-        }
-
         firebaseDatabase = FirebaseDatabase.getInstance().reference
         todoList = mutableListOf()
         adapter = AllTasksAdapter(this, todoList!!)
         recyclerView!!.adapter = adapter
         recyclerView!!.layoutManager = LinearLayoutManager(this)
         firebaseDatabase.orderByKey().addListenerForSingleValueEvent(listener)
+
+        buttonAddNewList.setOnClickListener {
+            addNewListDialog()
+        }
     }
 
     private var listener: ValueEventListener = object : ValueEventListener {
@@ -65,7 +64,6 @@ class MainActivity : AppCompatActivity() {
                     todoItem.listTitle = map["listTitle"] as String
                     todoItem.progress = map["progress"] as Long
                     todoList!!.add(todoItem)
-                    println("todoList: $todoList")
                 }
             }
             adapter.notifyDataSetChanged()
@@ -83,13 +81,11 @@ class MainActivity : AppCompatActivity() {
 
         alert.setPositiveButton("Save") { dialog, _ ->
             val taskList = TaskList.create()
-            // Using push() method, we obtain a new ID from firebase which we can provide to our To Do item.
             val newListKey = firebaseDatabase.child(Constants.FIREBASE_LIST).push()
 
             taskList.objectId = newListKey.key
             taskList.listTitle = newListTitle.text.toString()
             taskList.progress = 0
-            // Once we do setValue(…), the todoItem will be saved in firebase database.
             newListKey.setValue(taskList)
 
             val id = taskList.objectId.toString()
