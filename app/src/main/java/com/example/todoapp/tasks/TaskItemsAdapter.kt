@@ -3,10 +3,8 @@ package com.example.todoapp.tasks
 import android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.todoapp.R
 import com.example.todoapp.databinding.TaskItemsLayoutBinding
 import com.example.todoapp.tasks.data.TaskItems
 import kotlinx.android.synthetic.main.task_items_layout.view.*
@@ -16,13 +14,16 @@ class TaskItemsAdapter(private val taskItems:MutableList<TaskItems>) : RecyclerV
     private var counterCheckedItems: Float = 0.0F
     
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.task_items_layout, parent, false))
+        return ViewHolder(TaskItemsLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val task = taskItems[position]
+
+        holder.bind(taskItems[position])
+
 
         holder.itemView.apply {
+            val task = taskItems[position]
             taskText.text = task.taskName
             checkBoxTaskDone.isChecked = task.isDone
             strikeThroughItem(taskText, task.isDone)
@@ -44,25 +45,17 @@ class TaskItemsAdapter(private val taskItems:MutableList<TaskItems>) : RecyclerV
         }
     }
 
-    class ViewHolder(itemsView: View): RecyclerView.ViewHolder(itemsView)
+    class ViewHolder(private val binding: TaskItemsLayoutBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(taskitems: TaskItems) {
 
+            binding.checkBoxTaskDone.isChecked = taskitems.isDone
+            binding.taskText.text = taskitems.taskName
+        }
+    }
 
     override fun getItemCount(): Int = taskItems.size
 
-    fun addNewItem(taskItems: TaskItems) {
-        this.taskItems.add(taskItems)
-        notifyItemInserted(this.taskItems.size - 1)
-        notifyDataSetChanged()
-    }
-
-    fun deleteItems() {
-        taskItems.removeAll {
-                taskItem ->  taskItem.isDone
-        }
-        notifyDataSetChanged()
-    }
-
-    fun calculateProgress(): Int {
+    private fun calculateProgress(): Int {
         val totalProgressBar = taskItems.size
         println("totalProgressBar: $totalProgressBar")
         val progressValue = (counterCheckedItems/totalProgressBar) * 100

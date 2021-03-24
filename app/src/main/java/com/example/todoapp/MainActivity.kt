@@ -16,10 +16,12 @@ import com.google.firebase.database.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var recyclerView: RecyclerView
-    private var taskList: MutableList<TaskList>? = null
     private lateinit var reference: DatabaseReference
     private var database = FirebaseDatabase.getInstance().reference
+
+    private lateinit var recyclerView: RecyclerView
+    private var taskList: MutableList<TaskList>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -2,24 +2,21 @@ package com.example.todoapp
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.EditText
-import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.tasks.TaskItemsAdapter
 import com.example.todoapp.tasks.data.TaskItems
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_task_list.*
 
 class TaskListActivity : AppCompatActivity(){
 
-    private lateinit var itemAdapter: TaskItemsAdapter
     private lateinit var reference: DatabaseReference
+    private lateinit var recyclerView: RecyclerView
+    private var taskItems: MutableList<TaskItems>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,12 +26,16 @@ class TaskListActivity : AppCompatActivity(){
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
+
         reference = FirebaseDatabase.getInstance().getReference("To do lists")
 
-        itemAdapter = TaskItemsAdapter(mutableListOf())
+        taskItems = mutableListOf()
 
-        taskItemsRecyclerView.adapter = itemAdapter
-        taskItemsRecyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView = findViewById(R.id.taskItemsRecyclerView)
+        recyclerView.adapter = TaskItemsAdapter(taskItems!!)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        getDataFromFirebase()
 
         buttonAddNewTask.setOnClickListener {
             addNewItemDialog()
@@ -48,12 +49,30 @@ class TaskListActivity : AppCompatActivity(){
         return super.onSupportNavigateUp()
     }
 
-    private fun progress() {
-        //TODO Set progress value to progressbars
-        val progressBarItems = findViewById<ProgressBar>(R.id.itemsProgressBar)
-        val progressBarList = findViewById<ProgressBar>(R.id.cardProgressBar)
-        progressBarItems.progress = itemAdapter.calculateProgress()
-        progressBarList.progress = itemAdapter.calculateProgress()
+    private fun getDataFromFirebase() {
+        val listId = intent.getStringExtra("TITLE")
+        reference.child(listId.toString()).child("To do items").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                val allItems = taskItems
+                println("allItems: $allItems")
+
+                val adapter = recyclerView.adapter
+                allItems?.clear()
+
+                for (data in snapshot.children) {
+                    val items = data.getValue(TaskItems::class.java)
+                    recyclerView.adapter = adapter
+                    if (items != null) {
+                        allItems?.add(items)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("TaskListActivity", "loadItem:onCancelled database error", error.toException())
+            }
+        })
     }
 
     private fun addNewItemDialog() {
@@ -70,8 +89,6 @@ class TaskListActivity : AppCompatActivity(){
             val listId = listTitle.text.toString()
 
             reference.child(listId).child("To do items").child(newListItemText).setValue(newItem)
-            itemAdapter.addNewItem(newItem)
-            itemAdapter.notifyDataSetChanged()
             dialog.dismiss()
         }
         alert.show()
