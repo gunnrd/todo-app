@@ -19,8 +19,6 @@ class AllTasksAdapter (private val taskList:MutableList<TaskList>, private val d
         holder.bind(taskList[position], deleteListClick)
     }
 
-    override fun getItemCount(): Int = taskList.size
-
     inner class ViewHolder(private val binding: AllTasksLayoutBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(list: TaskList, deleteListClick: (TaskList) -> Unit) {
@@ -42,4 +40,6 @@ class AllTasksAdapter (private val taskList:MutableList<TaskList>, private val d
             }
         }
     }
+
+    override fun getItemCount(): Int = taskList.size
 }

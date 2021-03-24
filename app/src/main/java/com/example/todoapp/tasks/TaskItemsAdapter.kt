@@ -7,18 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.todoapp.R
+import com.example.todoapp.databinding.TaskItemsLayoutBinding
 import com.example.todoapp.tasks.data.TaskItems
 import kotlinx.android.synthetic.main.task_items_layout.view.*
 
 class TaskItemsAdapter(private val taskItems:MutableList<TaskItems>) : RecyclerView.Adapter<TaskItemsAdapter.ViewHolder>() {
 
     private var counterCheckedItems: Float = 0.0F
-
-    class ViewHolder(itemsView: View): RecyclerView.ViewHolder(itemsView)
-
+    
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context)
-            .inflate(R.layout.task_items_layout, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.task_items_layout, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -26,12 +24,12 @@ class TaskItemsAdapter(private val taskItems:MutableList<TaskItems>) : RecyclerV
 
         holder.itemView.apply {
             taskText.text = task.taskName
-            checkBoxTaskDone.isChecked = task.isChecked
-            strikeThroughItem(taskText, task.isChecked)
+            checkBoxTaskDone.isChecked = task.isDone
+            strikeThroughItem(taskText, task.isDone)
 
             checkBoxTaskDone.setOnCheckedChangeListener { _, isChecked ->
                 strikeThroughItem(taskText, isChecked)
-                task.isChecked = !task.isChecked
+                task.isDone = !task.isDone
 
                 if (checkBoxTaskDone.isChecked) {
                     counterCheckedItems += 1
@@ -46,6 +44,9 @@ class TaskItemsAdapter(private val taskItems:MutableList<TaskItems>) : RecyclerV
         }
     }
 
+    class ViewHolder(itemsView: View): RecyclerView.ViewHolder(itemsView)
+
+
     override fun getItemCount(): Int = taskItems.size
 
     fun addNewItem(taskItems: TaskItems) {
@@ -56,7 +57,7 @@ class TaskItemsAdapter(private val taskItems:MutableList<TaskItems>) : RecyclerV
 
     fun deleteItems() {
         taskItems.removeAll {
-            taskItem ->  taskItem.isChecked
+                taskItem ->  taskItem.isDone
         }
         notifyDataSetChanged()
     }

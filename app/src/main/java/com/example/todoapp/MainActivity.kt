@@ -17,23 +17,25 @@ import com.google.firebase.database.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var reference: DatabaseReference
     private var taskList: MutableList<TaskList>? = null
+    private lateinit var reference: DatabaseReference
     private var database = FirebaseDatabase.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val buttonAddNewList = findViewById<View>(R.id.buttonAddNewTaskList) as FloatingActionButton
-        recyclerView = findViewById<View>(R.id.allTasksRecyclerView) as RecyclerView
         reference = database.child("To do lists")
 
         taskList = mutableListOf()
-        this.recyclerView.adapter = AllTasksAdapter(taskList!!, this::deleteListClick)
-        this.recyclerView.layoutManager = LinearLayoutManager(this)
+
+        recyclerView = findViewById(R.id.allTasksRecyclerView)
+        recyclerView.adapter = AllTasksAdapter(taskList!!, this::deleteListClick)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         getDataFromFirebase()
+
+        val buttonAddNewList = findViewById<View>(R.id.buttonAddNewTaskList) as FloatingActionButton
 
         buttonAddNewList.setOnClickListener {
             addNewListDialog()
@@ -50,9 +52,11 @@ class MainActivity : AppCompatActivity() {
                 val allLists = taskList
                 val adapter = recyclerView.adapter
                 allLists?.clear()
+
                 for (data in snapshot.children) {
                     val list = data.getValue(TaskList::class.java)
                     recyclerView.adapter = adapter
+
                     if (list != null) {
                         allLists?.add(list)
                     }

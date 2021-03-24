@@ -1,18 +1,25 @@
 package com.example.todoapp
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.tasks.TaskItemsAdapter
 import com.example.todoapp.tasks.data.TaskItems
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_task_list.*
 
 class TaskListActivity : AppCompatActivity(){
 
     private lateinit var itemAdapter: TaskItemsAdapter
+    private lateinit var reference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +28,8 @@ class TaskListActivity : AppCompatActivity(){
         setSupportActionBar(taskItemsToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        reference = FirebaseDatabase.getInstance().getReference("To do lists")
 
         itemAdapter = TaskItemsAdapter(mutableListOf())
 
@@ -46,19 +55,24 @@ class TaskListActivity : AppCompatActivity(){
         progressBarItems.progress = itemAdapter.calculateProgress()
         progressBarList.progress = itemAdapter.calculateProgress()
     }
-    
+
     private fun addNewItemDialog() {
         val alert = AlertDialog.Builder(this)
-        val newItem = EditText(this)
+        val editTextItemText = EditText(this)
 
         alert.setTitle("Add new item")
         alert.setMessage("Enter task name")
-        alert.setView(newItem)
+        alert.setView(editTextItemText)
 
-        alert.setPositiveButton("Save") { _, _ ->
-            val listItem = newItem.text.toString()
-            val item = TaskItems(listItem, 0, false)
-            itemAdapter.addNewItem(item)
+        alert.setPositiveButton("Save") { dialog, _ ->
+            val newListItemText = editTextItemText.text.toString().trim()
+            val newItem = TaskItems(newListItemText, 0, false)
+            val listId = listTitle.text.toString()
+
+            reference.child(listId).child("To do items").child(newListItemText).setValue(newItem)
+            itemAdapter.addNewItem(newItem)
+            itemAdapter.notifyDataSetChanged()
+            dialog.dismiss()
         }
         alert.show()
     }
