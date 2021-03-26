@@ -27,6 +27,7 @@ class AllTasksAdapter (private val taskList:MutableList<TaskList>, private val d
             }
 
             binding.cardListName.text = list.listTitle
+            //binding.cardProgressBar.progress = list.progress!!
         }
 
         private val context = binding.root.context

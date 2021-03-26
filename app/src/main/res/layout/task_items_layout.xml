@@ -6,7 +6,7 @@
     >
 
     <CheckBox
-        android:id="@+id/checkBoxTaskDone"
+        android:id="@+id/checkBoxTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +20,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@id/checkBoxTaskDone"
+        app:layout_constraintStart_toEndOf="@id/checkBoxTask"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="20dp"/>

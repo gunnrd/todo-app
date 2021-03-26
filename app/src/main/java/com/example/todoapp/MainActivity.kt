@@ -82,7 +82,10 @@ class MainActivity : AppCompatActivity() {
 
         alert.setPositiveButton("Save") { dialog, _ ->
             val newListTitle = editTextListTitle.text.toString().trim()
-            val taskList = TaskList(newListTitle)
+            val taskList = TaskList(newListTitle, 0)
+            // For å sende inn begge verdiene fra data class tasklist
+            //val taskList = TaskList(newListTitle, 0)
+
             val listId = reference.push().key
 
             when {

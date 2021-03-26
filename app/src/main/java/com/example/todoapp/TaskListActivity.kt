@@ -26,13 +26,12 @@ class TaskListActivity : AppCompatActivity(){
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-
         reference = FirebaseDatabase.getInstance().getReference("To do lists")
 
         taskItems = mutableListOf()
 
         recyclerView = findViewById(R.id.taskItemsRecyclerView)
-        recyclerView.adapter = TaskItemsAdapter(taskItems!!)
+        recyclerView.adapter = TaskItemsAdapter(taskItems!!, this::saveCheckboxStatus)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         getDataFromFirebase()
@@ -49,14 +48,27 @@ class TaskListActivity : AppCompatActivity(){
         return super.onSupportNavigateUp()
     }
 
+    private fun saveCheckboxStatus(item: TaskItems) {
+
+        val listId = listTitle.text.toString()
+
+        if (item.done) {
+            item.taskName?.let {
+                reference.child(listId).child("/listItems").child(it).child("done").setValue(false)
+            }
+        } else {
+            item.taskName?.let {
+                reference.child(listId).child("/listItems").child(it).child("done").setValue(true)
+            }
+        }
+    }
+
     private fun getDataFromFirebase() {
         val listId = intent.getStringExtra("TITLE")
-        reference.child(listId.toString()).child("To do items").addValueEventListener(object : ValueEventListener {
+        reference.child(listId.toString()).child("listItems").addValueEventListener(object : ValueEventListener {
+
             override fun onDataChange(snapshot: DataSnapshot) {
-
                 val allItems = taskItems
-                println("allItems: $allItems")
-
                 val adapter = recyclerView.adapter
                 allItems?.clear()
 
@@ -85,10 +97,11 @@ class TaskListActivity : AppCompatActivity(){
 
         alert.setPositiveButton("Save") { dialog, _ ->
             val newListItemText = editTextItemText.text.toString().trim()
-            val newItem = TaskItems(newListItemText, 0, false)
+            //val newItem = TaskItems(newListItemText, false)
+            val newItem = TaskItems(newListItemText)
             val listId = listTitle.text.toString()
 
-            reference.child(listId).child("To do items").child(newListItemText).setValue(newItem)
+            reference.child(listId).child("listItems").child(newListItemText).setValue(newItem)
             dialog.dismiss()
         }
         alert.show()
