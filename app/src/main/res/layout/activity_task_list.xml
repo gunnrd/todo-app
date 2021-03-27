@@ -24,7 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/taskItemsToolbar"
-        android:background="@color/teal_200"
+        android:background="@color/purple"
         >
 
         <TextView
@@ -37,7 +37,7 @@
             android:text="@string/header_title" />
 
         <ProgressBar
-            android:id="@+id/itemsProgressBar"
+            android:id="@+id/progressBarItems"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -45,7 +45,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="20dp"
-            android:max="100"
+
             android:progress="0" />
 
     </LinearLayout>

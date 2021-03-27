@@ -13,20 +13,19 @@ class TaskItemsAdapter(private val taskItems:MutableList<TaskItems>, private val
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         holder.bind(taskItems[position], clickCheckbox)
     }
 
     class ViewHolder(private val binding: TaskItemsLayoutBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(taskItems: TaskItems, clickCheckbox: (TaskItems) -> Unit) {
-
             binding.checkBoxTask.isChecked = taskItems.done
             binding.taskText.text = taskItems.taskName
 
             binding.checkBoxTask.setOnClickListener {
                 clickCheckbox(taskItems)
             }
+
         }
     }
 

@@ -13,6 +13,7 @@ import com.example.todoapp.tasks.AllTasksAdapter
 import com.example.todoapp.tasks.data.TaskList
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.all_tasks_layout.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,7 +22,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private var taskList: MutableList<TaskList>? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,18 +38,49 @@ class MainActivity : AppCompatActivity() {
         getDataFromFirebase()
 
         val buttonAddNewList = findViewById<View>(R.id.buttonAddNewTaskList) as FloatingActionButton
-
         buttonAddNewList.setOnClickListener {
             addNewListDialog()
+        }
+
+    }
+
+    private fun countItems() {
+        val listId = intent.getStringExtra("TITLE").toString()
+        val snapshot: DataSnapshot? = null
+        val count = snapshot?.child(listId)?.child("/listItems")?.childrenCount
+        println("countItems(): $count")
+
+        if (count != null) {
+            cardProgressBar.max = count.toInt()
         }
     }
 
     private fun deleteListClick(taskList: TaskList) {
-        taskList.listTitle?.let { reference.child(it).removeValue() }
+        //TODO fiks her og tilhørende funksjon
+        //val listId = currentListId()
+        val listId = intent.getStringExtra("TITLE").toString()
+        val snapshot: DataSnapshot? = null
+        val listName = snapshot?.child(listId)?.toString()
+
+        val alert = AlertDialog.Builder(this)
+        alert.setTitle("Delete $listName")
+        alert.setMessage("This will delete $listName permanently!")
+        alert.setPositiveButton("Delete") { _, _ ->
+            taskList.listTitle?.let { reference.child(it).removeValue() }
+        }
+        alert.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+        alert.show()
+    }
+
+    private fun currentListId(): String {
+        return intent.getStringExtra("TITLE").toString()
     }
 
     private fun getDataFromFirebase() {
         reference.addValueEventListener(object : ValueEventListener {
+
             override fun onDataChange(snapshot: DataSnapshot) {
                 val allLists = taskList
                 val adapter = recyclerView.adapter
@@ -72,20 +103,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addNewListDialog() {
-
         val alert = AlertDialog.Builder(this)
         val editTextListTitle = EditText(this)
 
-        alert.setTitle("Add new to do list")
+        alert.setTitle("Add new list")
         alert.setMessage("Enter list name")
         alert.setView(editTextListTitle)
 
         alert.setPositiveButton("Save") { dialog, _ ->
             val newListTitle = editTextListTitle.text.toString().trim()
             val taskList = TaskList(newListTitle, 0)
-            // For å sende inn begge verdiene fra data class tasklist
-            //val taskList = TaskList(newListTitle, 0)
-
             val listId = reference.push().key
 
             when {
@@ -99,8 +126,12 @@ class MainActivity : AppCompatActivity() {
                  reference.child(newListTitle).setValue(taskList)
                 }
             }
+        }
+
+        alert.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
         }
+
         alert.show()
     }
 }

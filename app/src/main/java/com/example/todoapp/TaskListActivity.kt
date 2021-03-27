@@ -26,6 +26,7 @@ class TaskListActivity : AppCompatActivity(){
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
+        listTitle.text = intent.getStringExtra("TITLE")
         reference = FirebaseDatabase.getInstance().getReference("To do lists")
 
         taskItems = mutableListOf()
@@ -35,17 +36,51 @@ class TaskListActivity : AppCompatActivity(){
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         getDataFromFirebase()
+        saveProgressBarStatus()
 
         buttonAddNewTask.setOnClickListener {
             addNewItemDialog()
         }
-
-        listTitle.text = intent.getStringExtra("TITLE")
     }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return super.onSupportNavigateUp()
+    }
+
+    private fun getTaskItemCount() {
+        val listId = intent.getStringExtra("TITLE").toString()
+
+        reference.child(listId).child("/listItems").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val count = snapshot.childrenCount.toInt()
+                progressBarItems.max = count
+                //TODO Set cardProgressBar.max = count here?
+
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+    private fun saveProgressBarStatus() {
+        getTaskItemCount()
+        val listId = intent.getStringExtra("TITLE").toString()
+
+        reference.child(listId).child("/listItems").orderByChild("done").equalTo(true)
+            .addValueEventListener(object : ValueEventListener {
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    val countCheckedItems = snapshot.childrenCount.toInt()
+                    reference.child(listId).child("/progress").setValue(countCheckedItems)
+                    progressBarItems.progress = countCheckedItems
+                    //TODO Set cardProgressBar.progress = countCheckedItems here?
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.w("TaskListActivity", "loadItem:onCancelled database error", error.toException())
+                }
+            })
     }
 
     private fun saveCheckboxStatus(item: TaskItems) {
@@ -95,15 +130,18 @@ class TaskListActivity : AppCompatActivity(){
         alert.setMessage("Enter task name")
         alert.setView(editTextItemText)
 
-        alert.setPositiveButton("Save") { dialog, _ ->
+        alert.setPositiveButton("Save") { _, _ ->
             val newListItemText = editTextItemText.text.toString().trim()
-            //val newItem = TaskItems(newListItemText, false)
             val newItem = TaskItems(newListItemText)
             val listId = listTitle.text.toString()
 
             reference.child(listId).child("listItems").child(newListItemText).setValue(newItem)
+        }
+
+        alert.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
         }
+
         alert.show()
     }
 }
