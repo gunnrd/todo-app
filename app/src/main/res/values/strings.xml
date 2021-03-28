@@ -9,5 +9,5 @@
     <string name="add_new_task_list">Add new task list</string>
     <string name="add_new_task_item">Add new task item</string>
     <string name="delete_item_checked">Delete checked items</string>
-
+    <string name="change_color_theme">Change theme</string>
 </resources>

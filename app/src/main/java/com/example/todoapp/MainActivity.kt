@@ -7,13 +7,16 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.tasks.AllTasksAdapter
 import com.example.todoapp.tasks.data.TaskList
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.all_tasks_layout.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         taskList = mutableListOf()
 
         recyclerView = findViewById(R.id.allTasksRecyclerView)
-        recyclerView.adapter = AllTasksAdapter(taskList!!, this::deleteListClick)
+        recyclerView.adapter = AllTasksAdapter(taskList!!, this::deleteCardListOnClick)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         getDataFromFirebase()
@@ -42,29 +45,18 @@ class MainActivity : AppCompatActivity() {
             addNewListDialog()
         }
 
-    }
-
-    private fun countItems() {
-        val listId = intent.getStringExtra("TITLE").toString()
-        val snapshot: DataSnapshot? = null
-        val count = snapshot?.child(listId)?.child("/listItems")?.childrenCount
-        println("countItems(): $count")
-
-        if (count != null) {
-            cardProgressBar.max = count.toInt()
+        buttonChangeTheme.setOnClickListener {
+            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
+            buttonChangeTheme.setOnClickListener {
+                AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
+            }
         }
     }
 
-    private fun deleteListClick(taskList: TaskList) {
-        //TODO fiks her og tilhørende funksjon
-        //val listId = currentListId()
-        val listId = intent.getStringExtra("TITLE").toString()
-        val snapshot: DataSnapshot? = null
-        val listName = snapshot?.child(listId)?.toString()
-
+    private fun deleteCardListOnClick(taskList: TaskList) {
         val alert = AlertDialog.Builder(this)
-        alert.setTitle("Delete $listName")
-        alert.setMessage("This will delete $listName permanently!")
+        alert.setTitle("Delete list")
+        alert.setMessage("This will delete the list permanently!")
         alert.setPositiveButton("Delete") { _, _ ->
             taskList.listTitle?.let { reference.child(it).removeValue() }
         }
@@ -72,10 +64,6 @@ class MainActivity : AppCompatActivity() {
             dialog.dismiss()
         }
         alert.show()
-    }
-
-    private fun currentListId(): String {
-        return intent.getStringExtra("TITLE").toString()
     }
 
     private fun getDataFromFirebase() {
@@ -110,7 +98,8 @@ class MainActivity : AppCompatActivity() {
         alert.setMessage("Enter list name")
         alert.setView(editTextListTitle)
 
-        alert.setPositiveButton("Save") { dialog, _ ->
+        alert.setPositiveButton("Save") { _, _ ->
+
             val newListTitle = editTextListTitle.text.toString().trim()
             val taskList = TaskList(newListTitle, 0)
             val listId = reference.push().key

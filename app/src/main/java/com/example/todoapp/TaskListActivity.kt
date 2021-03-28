@@ -11,6 +11,8 @@ import com.example.todoapp.tasks.TaskItemsAdapter
 import com.example.todoapp.tasks.data.TaskItems
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_task_list.*
+import kotlinx.android.synthetic.main.all_tasks_layout.*
+import kotlinx.android.synthetic.main.task_items_layout.*
 
 class TaskListActivity : AppCompatActivity(){
 
@@ -55,8 +57,6 @@ class TaskListActivity : AppCompatActivity(){
             override fun onDataChange(snapshot: DataSnapshot) {
                 val count = snapshot.childrenCount.toInt()
                 progressBarItems.max = count
-                //TODO Set cardProgressBar.max = count here?
-
             }
             override fun onCancelled(error: DatabaseError) {}
         })

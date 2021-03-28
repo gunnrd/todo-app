@@ -27,6 +27,8 @@ class AllTasksAdapter(private val taskList:MutableList<TaskList>, private val de
 
         fun bind(list: TaskList, deleteListClick: (TaskList) -> Unit) {
             binding.cardListName.text = list.listTitle
+
+            //binding.cardProgressBar.max = taskList.size
             binding.cardProgressBar.progress = list.progress!!
 
             binding.cardDeleteButton.setOnClickListener {
