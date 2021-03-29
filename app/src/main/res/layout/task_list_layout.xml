@@ -37,10 +37,9 @@
             android:layout_gravity="end"
             android:layout_marginStart="300dp"
             android:layout_marginEnd="20dp"
-            android:background="@color/white"
+            android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/delete_task_list"
-            app:srcCompat="@android:drawable/ic_menu_delete"
-            android:backgroundTint="@android:color/transparent" />
+            app:srcCompat="@android:drawable/ic_menu_delete" />
 
         <ProgressBar
             android:id="@+id/cardProgressBar"

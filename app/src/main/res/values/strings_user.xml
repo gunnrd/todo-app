@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="enter_email">Enter email address</string>
+    <string name="enter_password">Enter password</string>
+    <string name="login">Login</string>
+    <string name="enter_new_email">Enter new email address</string>
+    <string name="enter_new_password">Enter new password</string>
+    <string name="register">Register</string>
+    <string name="log_out">Log out</string>
+</resources>

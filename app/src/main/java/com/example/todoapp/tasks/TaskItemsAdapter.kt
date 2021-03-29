@@ -6,19 +6,19 @@ import android.view.ViewGroup
 import com.example.todoapp.databinding.TaskItemsLayoutBinding
 import com.example.todoapp.tasks.data.TaskItems
 
-class TaskItemsAdapter(private val taskItems:MutableList<TaskItems>, private val clickCheckbox: (TaskItems) -> Unit) : RecyclerView.Adapter<TaskItemsAdapter.ViewHolder>() {
+class TaskItemsAdapter(private val taskItems:MutableList<TaskItems>, private val clickCheckbox: (TaskItems) -> Unit, private val deleteItem: (TaskItems) -> Unit) : RecyclerView.Adapter<TaskItemsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(TaskItemsLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(taskItems[position], clickCheckbox)
+        holder.bind(taskItems[position], clickCheckbox, deleteItem)
     }
 
     class ViewHolder(private val binding: TaskItemsLayoutBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(taskItems: TaskItems, clickCheckbox: (TaskItems) -> Unit) {
+        fun bind(taskItems: TaskItems, clickCheckbox: (TaskItems) -> Unit, deleteItem: (TaskItems) -> Unit) {
             binding.checkBoxTask.isChecked = taskItems.done
             binding.taskText.text = taskItems.taskName
 
@@ -26,6 +26,9 @@ class TaskItemsAdapter(private val taskItems:MutableList<TaskItems>, private val
                 clickCheckbox(taskItems)
             }
 
+            binding.buttonDeleteTask.setOnClickListener {
+                deleteItem(taskItems)
+            }
         }
     }
 

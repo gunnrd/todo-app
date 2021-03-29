@@ -1,88 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/taskItemsToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:theme="@style/ThemeOverlay.AppCompat.Light" />
+    tools:context=".TaskListActivity">
 
     <LinearLayout
-        android:id="@+id/listHeader"
+        android:id="@+id/mainActivityHeader"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintHeight_percent="0.15"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/taskItemsToolbar"
+        app:layout_constraintTop_toTopOf="parent"
         android:background="@color/steel_teal"
         >
 
         <TextView
-            android:id="@+id/listTitle"
+            android:id="@+id/headerTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:textSize="25sp"
+            android:text="@string/header_title"
             android:textAlignment="center"
-            android:text="@string/header_title" />
+            android:textSize="28sp" />
 
-        <ProgressBar
-            android:id="@+id/progressBarItems"
-            style="?android:attr/progressBarStyleHorizontal"
+        <TextView
+            android:id="@+id/headerSlogan"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="20dp"
-
-            android:progress="0" />
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textAlignment="center"
+            android:layout_marginTop="6dp"
+            android:text="@string/header_slogan" />
 
     </LinearLayout>
 
+    <ImageButton
+        android:id="@+id/buttonLogOut"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginStart="365dp"
+        android:layout_marginTop="6dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/log_out"
+        app:srcCompat="@android:drawable/ic_menu_set_as"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/buttonChangeTheme"
+        android:layout_width="32dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="6dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/change_color_theme"
+        app:srcCompat="@android:drawable/ic_menu_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ScrollView
-        android:id="@+id/taskItemsScrollView"
+        android:id="@+id/allTasksScrollview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainActivityHeader"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/listHeader"
         >
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/taskItemsRecyclerView"
+            android:id="@+id/allTasksRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </ScrollView>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/buttonAction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:fabSize="auto"
-        android:clickable="true"
-        android:focusable="true"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:contentDescription="@string/add_new_task_item"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/buttonAddNewTask"
+        android:id="@+id/buttonAddNewTaskList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -91,20 +89,9 @@
         android:focusable="true"
         app:srcCompat="@android:drawable/ic_input_add"
         android:contentDescription="@string/add_new_task_list"
-        app:layout_constraintBottom_toTopOf="@id/buttonAction"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/buttonDeleteCheckedItems"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:fabSize="auto"
-        android:clickable="true"
-        android:focusable="true"
-        app:srcCompat="@android:drawable/ic_menu_delete"
-        android:contentDescription="@string/delete_item_checked"
-        app:layout_constraintBottom_toTopOf="@id/buttonAddNewTask"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
