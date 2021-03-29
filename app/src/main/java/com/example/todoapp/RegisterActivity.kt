@@ -41,9 +41,10 @@ class RegisterActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { register ->
 
                 //TODO add fail checks
-
                 if (register.isSuccessful) {
                     startActivity(Intent(this,TaskListActivity::class.java))
+                    // TODO this that fails?
+                    Toast.makeText(this, "Welcome!", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "Registering failed.", Toast.LENGTH_SHORT).show()
                 }

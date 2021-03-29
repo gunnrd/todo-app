@@ -35,17 +35,15 @@ class TaskListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_list)
 
-        reference = database.child("To do lists")
+        val currentUser = auth.currentUser
+
+        reference = database.child(currentUser!!.uid).child("To do lists")
 
         taskList = mutableListOf()
 
         recyclerView = findViewById(R.id.allTasksRecyclerView)
         recyclerView.adapter = TaskListAdapter(taskList!!, this::deleteCardListOnClick)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-        //TODO Save lists to logged in user
-        val user = auth.currentUser
-        val userReference = reference.child(user!!.uid)
 
         getDataFromFirebase()
 
@@ -83,6 +81,7 @@ class TaskListActivity : AppCompatActivity() {
         reference.addValueEventListener(object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
+                recyclerView.adapter?.notifyDataSetChanged()
                 val allLists = taskList
                 val adapter = recyclerView.adapter
                 allLists?.clear()

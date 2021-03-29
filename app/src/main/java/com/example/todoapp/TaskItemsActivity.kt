@@ -9,12 +9,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.tasks.TaskItemsAdapter
 import com.example.todoapp.tasks.data.TaskItems
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_task_items.*
 
 class TaskItemsActivity : AppCompatActivity(){
 
     private lateinit var reference: DatabaseReference
+    private var auth = FirebaseAuth.getInstance()
+    private var database = FirebaseDatabase.getInstance().reference
     private lateinit var recyclerView: RecyclerView
     private var taskItems: MutableList<TaskItems>? = null
 
@@ -27,7 +30,9 @@ class TaskItemsActivity : AppCompatActivity(){
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
         listTitle.text = intent.getStringExtra("TITLE")
-        reference = FirebaseDatabase.getInstance().getReference("To do lists")
+
+        val currentUser = auth.currentUser
+        reference = database.child(currentUser!!.uid).child("To do lists")
 
         taskItems = mutableListOf()
 
