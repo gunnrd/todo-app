@@ -13,12 +13,7 @@ import kotlinx.android.synthetic.main.task_list_layout.view.*
 class TaskListAdapter(private val taskList: MutableList<TaskList>, private val deleteListClick: (TaskList) -> Unit) : RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            TaskListLayoutBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+        return ViewHolder(TaskListLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
@@ -26,13 +21,10 @@ class TaskListAdapter(private val taskList: MutableList<TaskList>, private val d
         holder.bind(taskList[position], deleteListClick)
     }
 
-    inner class ViewHolder(private val binding: TaskListLayoutBinding): RecyclerView.ViewHolder(
-        binding.root
-    ) {
+    inner class ViewHolder(private val binding: TaskListLayoutBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(list: TaskList, deleteListClick: (TaskList) -> Unit) {
             binding.cardListName.text = list.listTitle
-
             binding.cardProgressBar.progress = list.progress!!
 
             binding.cardDeleteButton.setOnClickListener {

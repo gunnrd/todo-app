@@ -21,11 +21,12 @@ class RegisterActivity : AppCompatActivity() {
         setSupportActionBar(registerToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         auth = FirebaseAuth.getInstance()
         reference = database
 
-        buttonRegisterAndLogin.setOnClickListener {
+        buttonRegister.setOnClickListener {
             registerNewUser()
         }
     }

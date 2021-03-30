@@ -18,7 +18,10 @@ import com.example.todoapp.tasks.data.TaskList
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.getValue
+import kotlinx.android.synthetic.main.activity_task_items.*
 import kotlinx.android.synthetic.main.activity_task_list.*
+import kotlinx.android.synthetic.main.task_list_layout.*
 
 class TaskListActivity : AppCompatActivity() {
 
@@ -69,6 +72,7 @@ class TaskListActivity : AppCompatActivity() {
         buttonMyProfile.setOnClickListener {
             //TODO
         }*/
+
     }
 
     private fun deleteCardListOnClick(taskList: TaskList) {
@@ -88,19 +92,17 @@ class TaskListActivity : AppCompatActivity() {
         reference.addValueEventListener(object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                recyclerView.adapter?.notifyDataSetChanged()
                 val allLists = taskList
-                val adapter = recyclerView.adapter
                 allLists?.clear()
 
                 for (data in snapshot.children) {
                     val list = data.getValue(TaskList::class.java)
-                    recyclerView.adapter = adapter
 
                     if (list != null) {
                         allLists?.add(list)
                     }
                 }
+                recyclerView.adapter?.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -143,7 +145,6 @@ class TaskListActivity : AppCompatActivity() {
         alert.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
         }
-        alert.create()
         alert.show()
     }
 

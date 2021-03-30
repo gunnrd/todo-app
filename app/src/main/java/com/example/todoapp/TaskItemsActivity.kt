@@ -71,6 +71,7 @@ class TaskItemsActivity : AppCompatActivity(){
 
     private fun saveProgressBarStatus() {
         getTaskItemCount()
+
         val listId = intent.getStringExtra("TITLE").toString()
 
         reference.child(listId).child("/listItems").orderByChild("done").equalTo(true)
@@ -80,7 +81,6 @@ class TaskItemsActivity : AppCompatActivity(){
                     val countCheckedItems = snapshot.childrenCount.toInt()
                     reference.child(listId).child("/progress").setValue(countCheckedItems)
                     progressBarItems.progress = countCheckedItems
-                    //TODO Set cardProgressBar.progress = countCheckedItems here?
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -106,7 +106,6 @@ class TaskItemsActivity : AppCompatActivity(){
     }
 
     private fun saveCheckboxStatus(item: TaskItems) {
-
         val listId = listTitle.text.toString()
 
         if (item.done) {
@@ -127,12 +126,10 @@ class TaskItemsActivity : AppCompatActivity(){
             override fun onDataChange(snapshot: DataSnapshot) {
                 recyclerView.adapter?.notifyDataSetChanged()
                 val allItems = taskItems
-                //val adapter = recyclerView.adapter
                 allItems?.clear()
 
                 for (data in snapshot.children) {
                     val items = data.getValue(TaskItems::class.java)
-                    //recyclerView.adapter = adapter
                     if (items != null) {
                         allItems?.add(items)
                     }

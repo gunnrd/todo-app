@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/mainActivityHeader"
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintHeight_percent="0.15"
@@ -49,60 +49,53 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        >
 
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
+            android:id="@+id/inputNewEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            >
+            android:hint="@string/enter_email"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:autofillHints="" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputNewEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/enter_new_email"
-                android:inputType="textEmailAddress"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
+            android:id="@+id/inputNewPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
             android:layout_marginTop="30dp"
+            android:ems="10"
+            android:hint="@string/enter_password"
+            android:inputType="textPassword"
+            android:autofillHints="" />
+
+        <Button
+            android:id="@+id/buttonRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputNewPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/enter_new_password"
-                android:inputType="textPassword" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="30dp"
+            android:text="@string/register" />
 
         <TextView
             android:id="@+id/spam_info"
             android:layout_width="280dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="30dp"
             android:text="@string/verification_spam_info"
-            android:textColor="@color/tea_green_medium"
+            android:textColor="@color/eton_blue"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/inputNewPassword" />
-
-        <Button
-            android:id="@+id/buttonRegisterAndLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/register"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spam_info" />
 
     </LinearLayout>
 
