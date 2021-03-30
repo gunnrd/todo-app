@@ -7,4 +7,7 @@
     <string name="enter_new_password">Enter new password</string>
     <string name="register">Register</string>
     <string name="log_out">Log out</string>
+    <string name="verification_spam_info">
+        If no verification email is received, please check your spam folder
+    </string>
 </resources>

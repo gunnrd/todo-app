@@ -2,7 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="tea_green">#C9E4CA</color>
+    <color name="tea_green_light">#C9E4CA</color>
+    <color name="tea_green_medium">#B7E4C7</color>
     <color name="eton_blue">#87BBA2</color>
     <color name="steel_teal">#55828B</color>
     <color name="deep_space_sparkle">#3B6064</color>

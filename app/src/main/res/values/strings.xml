@@ -1,13 +1,11 @@
 <resources>
     <string name="app_name">To do</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-    <string name="addNewTask">Add new task</string>
+    <string name="change_color_theme">Change theme</string>
+    <string name="my_profile">My profile</string>
     <string name="header_title">To do or not to do</string>
     <string name="header_slogan">Happy wife, happy life!</string>
-    <string name="delete_task_list">Delete task list</string>
     <string name="add_new_task_list">Add new task list</string>
+    <string name="delete_task_list">Delete task list</string>
     <string name="add_new_task_item">Add new task item</string>
-    <string name="delete_item">Delete item</string>
-    <string name="change_color_theme">Change theme</string>
+    <string name="delete_item">Delete task item</string>
 </resources>

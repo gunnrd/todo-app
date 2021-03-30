@@ -5,8 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity() {
@@ -27,7 +26,7 @@ class RegisterActivity : AppCompatActivity() {
         reference = database
 
         buttonRegisterAndLogin.setOnClickListener {
-            registerNewUserAndLogin()
+            registerNewUser()
         }
     }
 
@@ -36,17 +35,28 @@ class RegisterActivity : AppCompatActivity() {
         return super.onSupportNavigateUp()
     }
 
-    private fun registerNewUserAndLogin() {
+    private fun registerNewUser() {
         auth.createUserWithEmailAndPassword(inputNewEmail.text.toString(), inputNewPassword.text.toString())
             .addOnCompleteListener(this) { register ->
 
                 //TODO add fail checks
                 if (register.isSuccessful) {
-                    startActivity(Intent(this,TaskListActivity::class.java))
-                    // TODO this that fails?
-                    Toast.makeText(this, "Welcome!", Toast.LENGTH_SHORT).show()
+                    verifyEmail()
+                    auth.signOut()
+                    startActivity(Intent(this, MainActivity::class.java))
                 } else {
-                    Toast.makeText(this, "Registering failed.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "User already exists", Toast.LENGTH_LONG).show()
+                }
+            }
+    }
+
+    private fun verifyEmail() {
+        val user = auth.currentUser
+        user!!.sendEmailVerification().addOnCompleteListener(this) { sendVerification ->
+                if (sendVerification.isSuccessful) {
+                    Toast.makeText(this, "Verification email sent to " + user.email, Toast.LENGTH_SHORT).show()
+                } else {
+                     Toast.makeText(this, "Failed to send verification email.", Toast.LENGTH_SHORT).show()
                 }
             }
     }

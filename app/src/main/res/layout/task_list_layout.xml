@@ -6,13 +6,12 @@
     android:layout_margin="5dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="@color/white"
+    android:backgroundTint="@color/cardBackground"
     app:cardCornerRadius="6dp"
     app:cardElevation="6dp"
     app:cardMaxElevation="8dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true"
-    android:backgroundTint="@color/cardBackground"
     >
 
     <LinearLayout

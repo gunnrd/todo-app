@@ -3,6 +3,8 @@ package com.example.todoapp
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import android.widget.Toast.LENGTH_LONG
+import android.widget.Toast.LENGTH_SHORT
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
@@ -18,6 +20,13 @@ class MainActivity : AppCompatActivity() {
         if (auth.currentUser != null) {
             startActivity(Intent(this, TaskListActivity::class.java))
         }
+
+        //TODO wait for email verification
+        /*
+        while (!auth.currentUser!!.isEmailVerified) {
+            //TODO make spinner progress bar active
+            println("waiting")
+        }*/
 
         buttonLoginMain.setOnClickListener {
             logInUser()

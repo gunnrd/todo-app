@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.todoapp.databinding.TaskItemsLayoutBinding
 import com.example.todoapp.tasks.data.TaskItems
+import kotlin.reflect.KFunction0
 
-class TaskItemsAdapter(private val taskItems:MutableList<TaskItems>, private val clickCheckbox: (TaskItems) -> Unit, private val deleteItem: (TaskItems) -> Unit) : RecyclerView.Adapter<TaskItemsAdapter.ViewHolder>() {
+class TaskItemsAdapter(private val taskItems:MutableList<TaskItems>, private val clickCheckbox: (TaskItems) -> Unit,
+                       private val deleteItem: (TaskItems) -> Unit) : RecyclerView.Adapter<TaskItemsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(TaskItemsLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))

@@ -18,9 +18,7 @@ import com.example.todoapp.tasks.data.TaskList
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_task_list.*
-import kotlinx.android.synthetic.main.task_list_layout.*
 
 class TaskListActivity : AppCompatActivity() {
 
@@ -35,13 +33,17 @@ class TaskListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_list)
 
-        val currentUser = auth.currentUser
+        setSupportActionBar(taskListToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setDisplayShowHomeEnabled(false)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
+        val currentUser = auth.currentUser
         reference = database.child(currentUser!!.uid).child("To do lists")
 
         taskList = mutableListOf()
 
-        recyclerView = findViewById(R.id.allTasksRecyclerView)
+        recyclerView = findViewById(R.id.taskListRecyclerView)
         recyclerView.adapter = TaskListAdapter(taskList!!, this::deleteCardListOnClick)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -62,6 +64,11 @@ class TaskListActivity : AppCompatActivity() {
         buttonLogOut.setOnClickListener {
             logOut()
         }
+
+        /*
+        buttonMyProfile.setOnClickListener {
+            //TODO
+        }*/
     }
 
     private fun deleteCardListOnClick(taskList: TaskList) {
@@ -122,7 +129,11 @@ class TaskListActivity : AppCompatActivity() {
                 listId == null ->
                     Toast.makeText(this, "Error saving list. List id is null", Toast.LENGTH_SHORT).show()
                 listId.contentEquals(newListTitle) ->
-                    Toast.makeText(this, "List name already exists. Enter another name.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        "List name already exists. Enter another name.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 else -> {
                     reference.child(newListTitle).setValue(taskList)
                 }

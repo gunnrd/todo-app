@@ -16,8 +16,9 @@ import kotlinx.android.synthetic.main.activity_task_items.*
 class TaskItemsActivity : AppCompatActivity(){
 
     private lateinit var reference: DatabaseReference
-    private var auth = FirebaseAuth.getInstance()
     private var database = FirebaseDatabase.getInstance().reference
+    private var auth = FirebaseAuth.getInstance()
+
     private lateinit var recyclerView: RecyclerView
     private var taskItems: MutableList<TaskItems>? = null
 
@@ -28,6 +29,7 @@ class TaskItemsActivity : AppCompatActivity(){
         setSupportActionBar(taskItemsToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         listTitle.text = intent.getStringExtra("TITLE")
 
