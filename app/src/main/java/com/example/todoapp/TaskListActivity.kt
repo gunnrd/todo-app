@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.tasks.TaskListAdapter
 import com.example.todoapp.tasks.data.TaskList
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -52,6 +53,12 @@ class TaskListActivity : AppCompatActivity() {
 
         getDataFromFirebase()
 
+        val extendedFab = findViewById<View>(R.id.buttonExtendedTaskList) as ExtendedFloatingActionButton
+        extendedFab.shrink()
+        buttonDeleteAllLists.hide()
+        buttonAddNewTaskList.hide()
+        buttonViewHandler()
+
         val buttonAddNewList = findViewById<View>(R.id.buttonAddNewTaskList) as FloatingActionButton
         buttonAddNewList.setOnClickListener {
             addNewListDialog()
@@ -64,27 +71,34 @@ class TaskListActivity : AppCompatActivity() {
             }
         }
 
+        /*
+        buttonDeleteAllLists.setOnClickListener {
+            //TODO make function for buttonDeleteAllLists
+        }*/
+
         buttonLogOut.setOnClickListener {
             logOut()
         }
 
         /*
         buttonMyProfile.setOnClickListener {
-            //TODO
+            //TODO implement my profile activity and layout
         }*/
-
     }
 
     private fun deleteCardListOnClick(taskList: TaskList) {
         val alert = AlertDialog.Builder(this)
+
         alert.setTitle("Delete list")
         alert.setMessage("This will delete the list permanently!")
         alert.setPositiveButton("Delete") { _, _ ->
             taskList.listTitle?.let { reference.child(it).removeValue() }
         }
+
         alert.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
         }
+
         alert.show()
     }
 
@@ -138,6 +152,10 @@ class TaskListActivity : AppCompatActivity() {
                     ).show()
                 else -> {
                     reference.child(newListTitle).setValue(taskList)
+
+                    buttonExtendedTaskList.shrink()
+                    buttonDeleteAllLists.hide()
+                    buttonAddNewTaskList.hide()
                 }
             }
         }
@@ -145,6 +163,7 @@ class TaskListActivity : AppCompatActivity() {
         alert.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
         }
+
         alert.show()
     }
 
@@ -163,6 +182,25 @@ class TaskListActivity : AppCompatActivity() {
         alert.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
         }
+
         alert.show()
+    }
+
+    private fun buttonViewHandler() {
+        var isVisible = false
+
+        buttonExtendedTaskList.setOnClickListener {
+            isVisible = if (!isVisible) {
+                buttonDeleteAllLists.show()
+                buttonAddNewTaskList.show()
+                buttonExtendedTaskList.extend()
+                true
+            } else {
+                buttonDeleteAllLists.hide()
+                buttonAddNewTaskList.hide()
+                buttonExtendedTaskList.shrink()
+                false
+            }
+        }
     }
 }

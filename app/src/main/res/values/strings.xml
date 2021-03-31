@@ -2,10 +2,14 @@
     <string name="app_name">To do</string>
     <string name="change_color_theme">Change theme</string>
     <string name="my_profile">My profile</string>
-    <string name="header_title">To do or not to do</string>
-    <string name="header_slogan">Happy wife, happy life!</string>
+    <string name="header_title">To do</string>
+    <string name="header_slogan">To do or not to do</string>
     <string name="add_new_task_list">Add new task list</string>
     <string name="delete_task_list">Delete task list</string>
+    <string name="delete_all_task_lists">Delete task list</string>
     <string name="add_new_task_item">Add new task item</string>
     <string name="delete_item">Delete task item</string>
+    <string name="delete_all_items">Delete task item</string>
+    <string name="extended_fab">Extended floating action button</string>
+    <string name="add_delete">Add/delete</string>
 </resources>

@@ -1,7 +1,9 @@
 package com.example.todoapp
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
+import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.tasks.TaskItemsAdapter
 import com.example.todoapp.tasks.data.TaskItems
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_task_items.*
@@ -45,9 +48,21 @@ class TaskItemsActivity : AppCompatActivity(){
         getDataFromFirebase()
         saveProgressBarStatus()
 
+        val extendedFab = findViewById<View>(R.id.buttonExtendedTaskItems) as ExtendedFloatingActionButton
+        extendedFab.shrink()
+        buttonDeleteAllItems.hide()
+        buttonAddNewItem.hide()
+
+        buttonViewHandler()
+
         buttonAddNewItem.setOnClickListener {
             addNewItemDialog()
         }
+
+        /*
+        buttonDeleteAllItems.setOnClickListener {
+            //TODO make function for buttonDeleteAllItems
+        }*/
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -156,6 +171,10 @@ class TaskItemsActivity : AppCompatActivity(){
             val listId = listTitle.text.toString()
 
             reference.child(listId).child("listItems").child(newListItemText).setValue(newItem)
+
+            buttonDeleteAllItems.hide()
+            buttonAddNewItem.hide()
+            buttonExtendedTaskItems.shrink()
         }
 
         alert.setNegativeButton("Cancel") { dialog, _ ->
@@ -163,5 +182,23 @@ class TaskItemsActivity : AppCompatActivity(){
         }
 
         alert.show()
+    }
+
+    private fun buttonViewHandler() {
+        var isVisible = false
+
+        buttonExtendedTaskItems.setOnClickListener {
+            isVisible = if (!isVisible) {
+                buttonDeleteAllItems.show()
+                buttonAddNewItem.show()
+                buttonExtendedTaskItems.extend()
+                true
+            } else {
+                buttonDeleteAllItems.hide()
+                buttonAddNewItem.hide()
+                buttonExtendedTaskItems.shrink()
+                false
+            }
+        }
     }
 }
