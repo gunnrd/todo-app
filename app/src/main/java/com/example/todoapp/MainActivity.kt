@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(inputEmail.text.toString(), inputPassword.text.toString())
             .addOnCompleteListener(this) { login ->
 
-            //TODO add fail checks here
             if (login.isSuccessful) {
                 startActivity(Intent(this, TaskListActivity::class.java))
             } else {
@@ -58,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         alert.setMessage("Enter email address")
         alert.setView(editTextNewPassword)
 
-        alert.setPositiveButton("Send mail") { _, send ->
+        alert.setPositiveButton("Send mail") { _, _ ->
             val newPassword = editTextNewPassword.text.toString().trim()
             auth.sendPasswordResetEmail(newPassword).addOnCompleteListener { reset ->
                 if (reset.isSuccessful) {
@@ -74,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         alert.show()
     }
 
-    private fun inputCheck():Boolean {
+    private fun inputCheck(): Boolean {
         return when {
             inputEmail.text.toString().isEmpty() -> {
                 Toast.makeText(this, "Email is required", Toast.LENGTH_LONG).show()

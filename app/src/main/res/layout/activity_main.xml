@@ -50,6 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
+            android:layout_marginTop="100dp"
             android:hint="@string/enter_email"
             android:ems="10"
             android:inputType="textEmailAddress"
@@ -76,21 +77,49 @@
             android:layout_marginTop="30dp"
             android:text="@string/login" />
 
+
+        <TextView
+            android:id="@+id/forgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/forgot_password"
+            android:textColor="@color/eton_blue"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/buttonForgotPasswordMain" />
+
         <Button
             android:id="@+id/buttonForgotPasswordMain"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:layout_marginTop="30dp"
-            android:text="Password reset mail" />
+            android:layout_marginTop="20dp"
+            android:text="@string/reset_password" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            >
+
+            <View
+                android:background="@color/deep_space_sparkle"
+                android:layout_width = "fill_parent"
+                android:layout_height="2dip"
+                android:layout_centerVertical ="true"
+                android:layout_alignParentTop="true"/>
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/no_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="0dp"
             android:text="@string/no_account"
             android:textColor="@color/eton_blue"
             app:layout_constraintStart_toStartOf="parent"

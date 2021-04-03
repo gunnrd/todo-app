@@ -21,23 +21,13 @@
             >
 
             <ImageButton
-                android:id="@+id/buttonLogOut"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/transparent"
-                android:contentDescription="@string/logout"
-                app:srcCompat="@android:drawable/ic_menu_set_as"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
                 android:id="@+id/buttonChangeTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/transparent"
                 android:contentDescription="@string/change_color_theme"
                 app:srcCompat="@android:drawable/ic_menu_view"
-                app:layout_constraintEnd_toStartOf="@+id/buttonLogOut"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
@@ -54,7 +44,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
-        android:id="@+id/headerLogin"
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -91,7 +81,7 @@
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerLogin"
+        app:layout_constraintTop_toBottomOf="@+id/header"
         app:layout_constraintBottom_toBottomOf="parent"
         >
 

@@ -8,17 +8,21 @@
     <string name="logout">Log out</string>
     <string name="no_account">Don\'t have an account yet? Register new user</string>
     <string name="sign_up">Sign up</string>
-    <string name="enter_new_email">Enter new email address</string>
-    <string name="enter_new_password">Enter new password</string>
-    <string name="register">Register</string>
     <string name="confirm_password">Confirm password</string>
+    <string name="reset_password">Reset password</string>
+    <string name="forgot_password">Forgot password? Get email to reset password</string>
     <string name="verification_spam_info">
         If no verification email is received, please check your spam folder
     </string>
-    <string name="change_password">Change password</string>
+
+    <string name="register">Register</string>
+    <string name="enter_current_password">Enter your password</string>
+    <string name="validate_user">Validate</string>
+    <string name="enter_new_password">Enter new password</string>
+    <string name="enter_new_email_address">Enter new email address</string>
+    <string name="validate">Validate account with password to update profile</string>
     <string name="submit_password">Submit new password</string>
-    <string name="change_email">Change email address</string>
     <string name="submit_email">Submit new email address</string>
     <string name="delete_account">Delete my account</string>
-    <string name="delete_account_button">Delete</string>
+    <string name="delete_account_button">Delete account</string>
 </resources>

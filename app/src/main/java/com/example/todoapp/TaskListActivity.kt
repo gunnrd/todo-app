@@ -68,10 +68,6 @@ class TaskListActivity : AppCompatActivity() {
             }
         }
 
-        buttonLogOut.setOnClickListener {
-            logOut()
-        }
-
         val buttonAddNewList = findViewById<View>(R.id.buttonAddNewTaskList) as FloatingActionButton
         buttonAddNewList.setOnClickListener {
             addNewListDialog()
@@ -164,25 +160,6 @@ class TaskListActivity : AppCompatActivity() {
                     buttonDeleteAllLists.hide()
                     buttonAddNewTaskList.hide()
                 }
-            }
-        }
-
-        alert.setNegativeButton("Cancel") { dialog, _ ->
-            dialog.dismiss()
-        }
-
-        alert.show()
-    }
-
-    private fun logOut() {
-        val alert = AlertDialog.Builder(this)
-        alert.setTitle("Log out?")
-
-        alert.setPositiveButton("Ok") { _, _ ->
-            auth.signOut()
-
-            if (auth.currentUser == null) {
-                startActivity(Intent(this, MainActivity::class.java))
             }
         }
 

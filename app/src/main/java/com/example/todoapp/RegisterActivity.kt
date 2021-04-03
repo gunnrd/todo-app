@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_register.*
@@ -15,7 +14,6 @@ class RegisterActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var reference: DatabaseReference
-    private var database = FirebaseDatabase.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +25,7 @@ class RegisterActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         auth = FirebaseAuth.getInstance()
-        reference = database
+        reference = FirebaseDatabase.getInstance().reference
 
         buttonRegister.setOnClickListener {
             if (inputCheck()) {
@@ -66,8 +64,9 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun inputCheck():Boolean {
+    private fun inputCheck(): Boolean {
         val check: Boolean
+
         when {
             inputNewEmail.text.toString().isEmpty() -> {
                 Toast.makeText(this, "Email is required", Toast.LENGTH_LONG).show()
@@ -94,6 +93,7 @@ class RegisterActivity : AppCompatActivity() {
                 check = true
             }
         }
+
         return check
     }
 

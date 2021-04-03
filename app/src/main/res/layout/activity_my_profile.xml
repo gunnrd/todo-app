@@ -44,54 +44,42 @@
         >
 
         <TextView
-            android:id="@+id/changePassword"
+            android:id="@+id/changeEmailOrPassword"
             android:layout_width="330dp"
             android:layout_height="wrap_content"
-            android:text="@string/change_password"
+            android:text="@string/validate"
             android:textColor="@color/steel_teal"
-            android:textSize="20sp"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
-            android:id="@+id/inputChangePassword"
+            android:id="@+id/inputCurrentPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:hint="@string/enter_new_password"
-            android:ems="10"
-            android:textSize="15sp"
-            android:inputType="textPassword"
-            android:autofillHints="" />
-
-        <EditText
-            android:id="@+id/inputChangeConfirmPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:hint="@string/confirm_password"
+            android:hint="@string/enter_current_password"
             android:ems="10"
             android:textSize="15sp"
             android:inputType="textPassword"
             android:autofillHints="" />
 
         <Button
-            android:id="@+id/buttonSubmitPassword"
+            android:id="@+id/buttonValidateUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:text="@string/submit_password" />
+            android:text="@string/validate_user" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             >
 
             <View
@@ -103,16 +91,55 @@
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/changeEmail"
-            android:layout_width="330dp"
+        <EditText
+            android:id="@+id/inputNewPassword"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="@string/change_email"
-            android:textColor="@color/steel_teal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/inputNewPassword" />
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:hint="@string/enter_new_password"
+            android:ems="10"
+            android:textSize="15sp"
+            android:inputType="textPassword"
+            android:autofillHints="" />
+
+        <EditText
+            android:id="@+id/inputConfirmNewPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:hint="@string/confirm_password"
+            android:ems="10"
+            android:textSize="15sp"
+            android:inputType="textPassword"
+            android:autofillHints="" />
+
+        <Button
+            android:id="@+id/buttonSubmitNewPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:text="@string/submit_password" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            >
+
+            <View
+                android:background="@color/deep_space_sparkle"
+                android:layout_width = "fill_parent"
+                android:layout_height="2dip"
+                android:layout_centerVertical ="true"
+                android:layout_alignParentTop="true"/>
+
+        </RelativeLayout>
 
         <EditText
             android:id="@+id/inputChangeEmail"
@@ -122,12 +149,11 @@
             android:layout_marginEnd="30dp"
             android:ems="10"
             android:textSize="15sp"
-            android:hint="@string/enter_new_email"
-            android:inputType="textEmailAddress"
-            android:autofillHints="" />
+            android:hint="@string/enter_new_email_address"
+            android:inputType="textEmailAddress" />
 
         <Button
-            android:id="@+id/buttonSubmitEmail"
+            android:id="@+id/buttonSubmitNewEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -137,8 +163,8 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             >
@@ -156,7 +182,7 @@
             android:id="@+id/deleteAccount"
             android:layout_width="330dp"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:text="@string/delete_account"
             android:textColor="@color/steel_teal"
             app:layout_constraintStart_toStartOf="parent"
