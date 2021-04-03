@@ -5,16 +5,19 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.tasks.TaskItemsAdapter
 import com.example.todoapp.tasks.data.TaskItems
+import com.example.todoapp.tasks.data.TaskList
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_task_items.*
+import kotlinx.android.synthetic.main.activity_task_list.*
 
 class TaskItemsActivity : AppCompatActivity(){
 
@@ -24,6 +27,10 @@ class TaskItemsActivity : AppCompatActivity(){
 
     private lateinit var recyclerView: RecyclerView
     private var taskItems: MutableList<TaskItems>? = null
+
+    private lateinit var eventListenerProgressBar: ValueEventListener
+    private lateinit var eventListenerGetTaskItemCount: ValueEventListener
+    private lateinit var eventListenerGetDataFromFirebase: ValueEventListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,24 +52,68 @@ class TaskItemsActivity : AppCompatActivity(){
         recyclerView.adapter = TaskItemsAdapter(taskItems!!, this::saveCheckboxStatus, this::deleteItem)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        getDataFromFirebase()
-        saveProgressBarStatus()
-
         val extendedFab = findViewById<View>(R.id.buttonExtendedTaskItems) as ExtendedFloatingActionButton
         extendedFab.shrink()
         buttonDeleteAllItems.hide()
         buttonAddNewItem.hide()
-
         buttonViewHandler()
 
         buttonAddNewItem.setOnClickListener {
             addNewItemDialog()
         }
 
-        /*
         buttonDeleteAllItems.setOnClickListener {
-            //TODO make function for buttonDeleteAllItems
-        }*/
+            deleteAllItems()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getDataFromFirebase()
+        getTaskItemCount()
+        saveProgressBarStatus()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        reference.removeEventListener(eventListenerProgressBar)
+        reference.removeEventListener(eventListenerGetTaskItemCount)
+        reference.removeEventListener(eventListenerGetDataFromFirebase)
+        //Thread.sleep(1000)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        reference.removeEventListener(eventListenerProgressBar)
+        reference.removeEventListener(eventListenerGetTaskItemCount)
+        reference.removeEventListener(eventListenerGetDataFromFirebase)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        reference.removeEventListener(eventListenerProgressBar)
+        reference.removeEventListener(eventListenerGetTaskItemCount)
+        reference.removeEventListener(eventListenerGetDataFromFirebase)
+        //finish()
+    }
+
+    private fun saveProgressBarStatus() {
+        val listId = intent.getStringExtra("TITLE").toString()
+
+        eventListenerProgressBar = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val countCheckedItems = snapshot.childrenCount.toInt()
+                reference.child(listId).child("/progress").setValue(countCheckedItems)
+                progressBarItems.progress = countCheckedItems
+                recyclerView.adapter?.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("TaskListActivity", "loadItem:onCancelled database error", error.toException())
+            }
+        }
+
+        reference.child(listId).child("/listItems").orderByChild("done").equalTo(true).addValueEventListener(eventListenerProgressBar)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -73,35 +124,18 @@ class TaskItemsActivity : AppCompatActivity(){
     private fun getTaskItemCount() {
         val listId = intent.getStringExtra("TITLE").toString()
 
-        reference.child(listId).child("/listItems").addValueEventListener(object : ValueEventListener {
+        eventListenerGetTaskItemCount = object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 val count = snapshot.childrenCount.toInt()
                 progressBarItems.max = count
+                reference.child(listId).child("/itemCount").setValue(count)
             }
 
             override fun onCancelled(error: DatabaseError) {}
-        })
-    }
+        }
 
-    private fun saveProgressBarStatus() {
-        getTaskItemCount()
-
-        val listId = intent.getStringExtra("TITLE").toString()
-
-        reference.child(listId).child("/listItems").orderByChild("done").equalTo(true)
-            .addValueEventListener(object : ValueEventListener {
-
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val countCheckedItems = snapshot.childrenCount.toInt()
-                    reference.child(listId).child("/progress").setValue(countCheckedItems)
-                    progressBarItems.progress = countCheckedItems
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Log.w("TaskListActivity", "loadItem:onCancelled database error", error.toException())
-                }
-            })
+        reference.child(listId).child("/listItems").addValueEventListener(eventListenerGetTaskItemCount)
     }
 
     private fun deleteItem(taskItems: TaskItems) {
@@ -111,6 +145,22 @@ class TaskItemsActivity : AppCompatActivity(){
         alert.setPositiveButton("Delete") { _, _ ->
             val listId = intent.getStringExtra("TITLE").toString()
             taskItems.taskName?.let { reference.child(listId).child("/listItems").child(it).removeValue() }
+        }
+
+        alert.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        alert.show()
+    }
+
+    private fun deleteAllItems() {
+        val alert = AlertDialog.Builder(this)
+        alert.setTitle("Delete all items")
+        alert.setMessage("Warning! This will ALL items permanently!")
+        alert.setPositiveButton("Delete") { _, _ ->
+            val listId = intent.getStringExtra("TITLE").toString()
+            reference.child(listId).child("/listItems").removeValue()
         }
 
         alert.setNegativeButton("Cancel") { dialog, _ ->
@@ -136,7 +186,8 @@ class TaskItemsActivity : AppCompatActivity(){
 
     private fun getDataFromFirebase() {
         val listId = intent.getStringExtra("TITLE")
-        reference.child(listId.toString()).child("listItems").addValueEventListener(object : ValueEventListener {
+
+        eventListenerGetDataFromFirebase = object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 recyclerView.adapter?.notifyDataSetChanged()
@@ -154,7 +205,10 @@ class TaskItemsActivity : AppCompatActivity(){
             override fun onCancelled(error: DatabaseError) {
                 Log.w("TaskListActivity", "loadItem:onCancelled database error", error.toException())
             }
-        })
+        }
+
+        reference.child(listId.toString()).child("listItems")
+            .addValueEventListener(eventListenerGetDataFromFirebase)
     }
 
     private fun addNewItemDialog() {

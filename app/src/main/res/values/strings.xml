@@ -12,4 +12,5 @@
     <string name="delete_all_items">Delete task item</string>
     <string name="extended_fab">Extended floating action button</string>
     <string name="add_delete">Add/delete</string>
+    <string name="edit_list_name">Edit list name</string>
 </resources>

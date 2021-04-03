@@ -19,10 +19,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.getValue
-import kotlinx.android.synthetic.main.activity_task_items.*
 import kotlinx.android.synthetic.main.activity_task_list.*
-import kotlinx.android.synthetic.main.task_list_layout.*
 
 class TaskListActivity : AppCompatActivity() {
 
@@ -71,10 +68,9 @@ class TaskListActivity : AppCompatActivity() {
             }
         }
 
-        /*
         buttonDeleteAllLists.setOnClickListener {
-            //TODO make function for buttonDeleteAllLists
-        }*/
+            deleteAllLists()
+        }
 
         buttonLogOut.setOnClickListener {
             logOut()
@@ -93,6 +89,21 @@ class TaskListActivity : AppCompatActivity() {
         alert.setMessage("This will delete the list permanently!")
         alert.setPositiveButton("Delete") { _, _ ->
             taskList.listTitle?.let { reference.child(it).removeValue() }
+        }
+
+        alert.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        alert.show()
+    }
+
+    private fun deleteAllLists() {
+        val alert = AlertDialog.Builder(this)
+        alert.setTitle("Delete all lists")
+        alert.setMessage("Warning! This will ALL lists permanently!")
+        alert.setPositiveButton("Delete") { _, _ ->
+            reference.removeValue()
         }
 
         alert.setNegativeButton("Cancel") { dialog, _ ->
@@ -127,16 +138,16 @@ class TaskListActivity : AppCompatActivity() {
 
     private fun addNewListDialog() {
         val alert = AlertDialog.Builder(this)
-        val editTextListTitle = EditText(this)
+        val editTextAddListTitle = EditText(this)
 
         alert.setTitle("Add new list")
         alert.setMessage("Enter list name")
-        alert.setView(editTextListTitle)
+        alert.setView(editTextAddListTitle)
 
         alert.setPositiveButton("Save") { _, _ ->
 
-            val newListTitle = editTextListTitle.text.toString().trim()
-            val taskList = TaskList(newListTitle, 0)
+            val newListTitle = editTextAddListTitle.text.toString().trim()
+            val taskList = TaskList(newListTitle, 0, 0)
             val listId = reference.push().key
 
             when {
