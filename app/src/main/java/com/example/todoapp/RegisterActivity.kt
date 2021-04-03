@@ -4,9 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_register.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -27,7 +30,9 @@ class RegisterActivity : AppCompatActivity() {
         reference = database
 
         buttonRegister.setOnClickListener {
-            registerNewUser()
+            if (inputCheck()) {
+                registerNewUser()
+            }
         }
     }
 
@@ -40,7 +45,6 @@ class RegisterActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(inputNewEmail.text.toString(), inputNewPassword.text.toString())
             .addOnCompleteListener(this) { register ->
 
-                //TODO add fail checks
                 if (register.isSuccessful) {
                     verifyEmail()
                     auth.signOut()
@@ -54,11 +58,51 @@ class RegisterActivity : AppCompatActivity() {
     private fun verifyEmail() {
         val user = auth.currentUser
         user!!.sendEmailVerification().addOnCompleteListener(this) { sendVerification ->
-                if (sendVerification.isSuccessful) {
-                    Toast.makeText(this, "Verification email sent to " + user.email, Toast.LENGTH_SHORT).show()
-                } else {
-                     Toast.makeText(this, "Failed to send verification email.", Toast.LENGTH_SHORT).show()
-                }
+            if (sendVerification.isSuccessful) {
+                Toast.makeText(this, "Verification email sent to " + user.email, Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Failed to send verification email.", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun inputCheck():Boolean {
+        val check: Boolean
+        when {
+            inputNewEmail.text.toString().isEmpty() -> {
+                Toast.makeText(this, "Email is required", Toast.LENGTH_LONG).show()
+                check = false
+            }
+            inputNewPassword.text.toString().isEmpty() || inputConfirmPassword.text.toString().isEmpty() -> {
+                Toast.makeText(this, "Both password fields are required", Toast.LENGTH_LONG).show()
+                check = false
+            }
+            inputNewPassword.text.toString() != inputConfirmPassword.text.toString() -> {
+                Toast.makeText(this, "Passwords does not match", Toast.LENGTH_LONG).show()
+                check = false
+            }
+            inputNewPassword.text.toString().length < 6 -> {
+                Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_LONG).show()
+                check = false
+            }
+            //TODO check if 100% correct
+            !validatePassword(inputNewPassword.text.toString()) -> {
+                Toast.makeText(this, "Password has invalid characters", Toast.LENGTH_LONG).show()
+                check = false
+            }
+            else -> {
+                check = true
+            }
+        }
+        return check
+    }
+
+    private fun validatePassword(password: String): Boolean {
+        val pattern: Pattern
+        val passwordPattern = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$"
+        pattern = Pattern.compile(passwordPattern)
+        val matcher: Matcher = pattern.matcher(password)
+
+        return !matcher.matches()
     }
 }

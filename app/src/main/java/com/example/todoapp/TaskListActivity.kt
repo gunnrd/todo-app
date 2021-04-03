@@ -56,9 +56,9 @@ class TaskListActivity : AppCompatActivity() {
         buttonAddNewTaskList.hide()
         buttonViewHandler()
 
-        val buttonAddNewList = findViewById<View>(R.id.buttonAddNewTaskList) as FloatingActionButton
-        buttonAddNewList.setOnClickListener {
-            addNewListDialog()
+        buttonMyProfile.setOnClickListener {
+            startActivity(Intent(this, MyProfileActivity::class.java))
+            println("test")
         }
 
         buttonChangeTheme.setOnClickListener {
@@ -68,18 +68,18 @@ class TaskListActivity : AppCompatActivity() {
             }
         }
 
-        buttonDeleteAllLists.setOnClickListener {
-            deleteAllLists()
-        }
-
         buttonLogOut.setOnClickListener {
             logOut()
         }
 
-        /*
-        buttonMyProfile.setOnClickListener {
-            //TODO implement my profile activity and layout
-        }*/
+        val buttonAddNewList = findViewById<View>(R.id.buttonAddNewTaskList) as FloatingActionButton
+        buttonAddNewList.setOnClickListener {
+            addNewListDialog()
+        }
+
+        buttonDeleteAllLists.setOnClickListener {
+            deleteAllLists()
+        }
     }
 
     private fun deleteCardListOnClick(taskList: TaskList) {
@@ -152,15 +152,11 @@ class TaskListActivity : AppCompatActivity() {
 
             when {
                 newListTitle.isEmpty() ->
-                    Toast.makeText(this, "Enter list title", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "List title is required", Toast.LENGTH_SHORT).show()
                 listId == null ->
                     Toast.makeText(this, "Error saving list. List id is null", Toast.LENGTH_SHORT).show()
                 listId.contentEquals(newListTitle) ->
-                    Toast.makeText(
-                        this,
-                        "List name already exists. Enter another name.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this, "List name already exists. Enter another name.", Toast.LENGTH_SHORT).show()
                 else -> {
                     reference.child(newListTitle).setValue(taskList)
 

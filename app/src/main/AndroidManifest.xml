@@ -21,6 +21,7 @@
         <activity android:name=".TaskItemsActivity" />
         <activity android:name=".TaskListActivity" />
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".MyProfileActivity" />
     </application>
 
 </manifest>

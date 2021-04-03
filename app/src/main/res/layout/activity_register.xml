@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RegisterActivity">
@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/header"
+        android:id="@+id/headerLogin"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintHeight_percent="0.15"
@@ -23,26 +23,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/registerToolbar"
-        android:background="@color/steel_teal"
         >
 
         <TextView
             android:id="@+id/headerTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/header_title"
+            android:text="@string/header_register"
             android:layout_marginTop="20dp"
             android:textAlignment="center"
             android:textSize="28sp" />
 
-        <TextView
-            android:id="@+id/headerSlogan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textAlignment="center"
-            android:layout_marginTop="6dp"
-            android:text="@string/header_slogan" />
     </LinearLayout>
 
     <LinearLayout
@@ -50,7 +41,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintTop_toBottomOf="@id/headerLogin"
         >
 
         <EditText
@@ -73,6 +64,18 @@
             android:layout_marginTop="30dp"
             android:ems="10"
             android:hint="@string/enter_password"
+            android:inputType="textPassword"
+            android:autofillHints="" />
+
+        <EditText
+            android:id="@+id/inputConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="30dp"
+            android:ems="10"
+            android:hint="@string/confirm_password"
             android:inputType="textPassword"
             android:autofillHints="" />
 
