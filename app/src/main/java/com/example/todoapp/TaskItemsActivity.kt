@@ -114,7 +114,9 @@ class TaskItemsActivity : AppCompatActivity(){
             }
         }
 
-        reference.child(listId).child("/listItems").orderByChild("done").equalTo(true).addValueEventListener(eventListenerProgressBar)
+        reference.child(listId).child("/listItems").orderByChild("done").equalTo(true)
+            .addValueEventListener(eventListenerProgressBar)
+
     }
 
     private fun getTaskItemCount() {
@@ -131,7 +133,8 @@ class TaskItemsActivity : AppCompatActivity(){
             override fun onCancelled(error: DatabaseError) {}
         }
 
-        reference.child(listId).child("/listItems").addValueEventListener(eventListenerGetTaskItemCount)
+        reference.child(listId).child("/listItems")
+            .addValueEventListener(eventListenerGetTaskItemCount)
     }
 
     private fun deleteItem(taskItems: TaskItems) {
