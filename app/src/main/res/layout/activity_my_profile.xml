@@ -49,11 +49,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_gravity="start"
-            android:text="@string/validate"
-            android:textColor="@color/steel_teal"
             android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:text="@string/validate"
+            android:textColor="@color/steel_teal" />
 
         <EditText
             android:id="@+id/inputCurrentPassword"

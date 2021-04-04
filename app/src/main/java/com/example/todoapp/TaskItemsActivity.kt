@@ -228,10 +228,6 @@ class TaskItemsActivity : AppCompatActivity(){
             val listId = listTitle.text.toString()
 
             reference.child(listId).child("listItems").child(newListItemText).setValue(newItem)
-
-            buttonDeleteAllItems.hide()
-            buttonAddNewItem.hide()
-            buttonExtendedTaskItems.shrink()
         }
 
         alert.setNegativeButton("Cancel") { dialog, _ ->
