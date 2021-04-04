@@ -159,7 +159,7 @@ class TaskItemsActivity : AppCompatActivity(){
         val alert = AlertDialog.Builder(this)
 
         alert.setTitle("Delete all items")
-        alert.setMessage("Warning! This will ALL items permanently!")
+        alert.setMessage("Warning! This will delete ALL items permanently!")
 
         alert.setPositiveButton("Delete") { _, _ ->
             val listId = intent.getStringExtra("TITLE").toString()

@@ -100,7 +100,7 @@ class TaskListActivity : AppCompatActivity() {
         val alert = AlertDialog.Builder(this)
 
         alert.setTitle("Delete all lists")
-        alert.setMessage("Warning! This will ALL lists permanently!")
+        alert.setMessage("Warning! This will delete ALL lists permanently!")
 
         alert.setPositiveButton("Delete") { _, _ ->
             reference.removeValue()

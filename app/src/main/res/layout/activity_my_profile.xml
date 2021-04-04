@@ -45,8 +45,10 @@
 
         <TextView
             android:id="@+id/textValidateAccountInfo"
-            android:layout_width="330dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_gravity="start"
             android:text="@string/validate"
             android:textColor="@color/steel_teal"
             android:textSize="15sp"
@@ -180,14 +182,13 @@
 
         <TextView
             android:id="@+id/deleteAccount"
-            android:layout_width="330dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_gravity="start"
             android:textSize="15sp"
             android:text="@string/delete_account"
-            android:textColor="@color/steel_teal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/inputNewPassword" />
+            android:textColor="@color/steel_teal" />
 
         <Button
             android:id="@+id/buttonDeleteUser"

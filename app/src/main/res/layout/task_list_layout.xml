@@ -23,7 +23,7 @@
 
         <TextView
             android:id="@+id/cardListName"
-            android:layout_width="match_parent"
+            android:layout_width="340dp"
             android:layout_height="match_parent"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
@@ -31,11 +31,12 @@
 
         <ImageButton
             android:id="@+id/cardDeleteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="27dp"
             android:layout_gravity="end"
             android:layout_marginStart="300dp"
             android:layout_marginEnd="20dp"
+            android:layout_marginTop="1dp"
             android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/delete_task_list"
             app:srcCompat="@android:drawable/ic_menu_delete" />
