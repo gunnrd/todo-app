@@ -2,6 +2,7 @@ package com.example.todoapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -10,13 +11,13 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_my_profile.*
 import kotlinx.android.synthetic.main.activity_my_profile.inputNewPassword
-import kotlinx.android.synthetic.main.activity_register.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 class MyProfileActivity : AppCompatActivity() {
 
     private var auth = FirebaseAuth.getInstance()
+    private lateinit var matcher: Matcher
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +32,6 @@ class MyProfileActivity : AppCompatActivity() {
 
         buttonValidateUser.setOnClickListener {
             validateUser()
-            buttonEnableHandler()
-
-            /*
-            if (validateUser()) {
-                buttonEnableHandler()
-            }*/
         }
 
         buttonSubmitNewPassword.setOnClickListener {
@@ -46,7 +41,9 @@ class MyProfileActivity : AppCompatActivity() {
         }
 
         buttonSubmitNewEmail.setOnClickListener {
-            submitNewEmailAddress()
+            if (inputCheckEmail()) {
+                submitNewEmailAddress()
+            }
         }
 
         buttonDeleteUser.setOnClickListener {
@@ -63,9 +60,7 @@ class MyProfileActivity : AppCompatActivity() {
         return super.onSupportNavigateUp()
     }
 
-    //TODO fix boolean expression
-    private fun validateUser(): Boolean {
-        var validation = false
+    private fun validateUser() {
         val currentUser = auth.currentUser
         val password = inputCurrentPassword.text.toString()
 
@@ -76,23 +71,23 @@ class MyProfileActivity : AppCompatActivity() {
                 if (update.isSuccessful) {
                     Toast.makeText(this, "Account validated", Toast.LENGTH_SHORT).show()
                     inputCurrentPassword.text.clear()
-                    validation = true
-                }
-                /*
-                else {
+                    buttonEnableHandler()
+
+                    val textChangeValidate = "Account validated!"
+                    textValidateAccountInfo.text = textChangeValidate
+                    inputCurrentPassword.isEnabled = false
+                    buttonValidateUser.isEnabled = false
+
+                } else {
                     Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show()
-                    false
-                }*/
+                }
             }
         }
-
-        return validation
     }
 
     private fun submitNewPassword() {
         val password = findViewById<EditText>(R.id.inputNewPassword).text.toString()
 
-        //TODO fail check input fields
         auth.currentUser?.let { updatePassword ->
             val alert = AlertDialog.Builder(this)
             alert.setTitle("Update password")
@@ -118,17 +113,53 @@ class MyProfileActivity : AppCompatActivity() {
         }
     }
 
+    private fun inputCheckPassword(): Boolean {
+        val check: Boolean
+
+        when {
+            inputNewPassword.text.toString().isEmpty() || inputConfirmNewPassword.text.toString().isEmpty() -> {
+                Toast.makeText(this, "Both password fields are required", Toast.LENGTH_LONG).show()
+                check = false
+            }
+            inputNewPassword.text.toString() != inputConfirmNewPassword.text.toString() -> {
+                Toast.makeText(this, "Passwords does not match", Toast.LENGTH_LONG).show()
+                check = false
+            }
+            inputNewPassword.text.toString().length < 6 -> {
+                Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_LONG).show()
+                check = false
+            }
+            !validatePasswordFormat(inputNewPassword.text.toString()) -> {
+                Toast.makeText(this, "Password has invalid characters", Toast.LENGTH_LONG).show()
+                check = false
+            }
+            else -> {
+                check = true
+            }
+        }
+
+        return check
+    }
+
+    private fun validatePasswordFormat(password: String): Boolean {
+        val pattern: Pattern
+        val passwordPattern = "^(?=\\S+$).{6,}$"
+        pattern = Pattern.compile(passwordPattern)
+        val matcher = pattern.matcher(password)
+
+        return matcher.matches()
+    }
+
     private fun submitNewEmailAddress() {
         val email = findViewById<EditText>(R.id.inputChangeEmail).text.toString()
 
-        //TODO fail check input fields
-        auth.currentUser?.let { updateEmail ->
+        auth.currentUser?.let { updateEmailAddress ->
             val alert = AlertDialog.Builder(this)
             alert.setTitle("Update email")
             alert.setMessage("Do you want to change email address?")
 
             alert.setPositiveButton("Ok") { _, _ ->
-                updateEmail.updateEmail(email).addOnCompleteListener { update ->
+                updateEmailAddress.updateEmail(email).addOnCompleteListener { update ->
                     if (update.isSuccessful) {
                         Toast.makeText(this, "Email updated", Toast.LENGTH_LONG).show()
                         auth.signOut()
@@ -145,6 +176,26 @@ class MyProfileActivity : AppCompatActivity() {
 
             alert.show()
         }
+    }
+
+    private fun inputCheckEmail(): Boolean {
+        return when {
+            inputChangeEmail.text.toString().isEmpty() -> {
+                Toast.makeText(this, "New email address is required", Toast.LENGTH_LONG).show()
+                false
+            }
+            !validateEmailFormat(inputChangeEmail.text.toString()) -> {
+                Toast.makeText(this, "Email format is incorrect", Toast.LENGTH_LONG).show()
+                false
+            }
+            else -> {
+                true
+            }
+        }
+    }
+
+    private fun validateEmailFormat(email: String): Boolean {
+        return(Patterns.EMAIL_ADDRESS.matcher(email).matches())
     }
 
     private fun deleteAccount() {
@@ -186,58 +237,6 @@ class MyProfileActivity : AppCompatActivity() {
         }
 
         alert.show()
-    }
-
-    //TODO fix
-    private fun inputCheckEmail(): Boolean {
-        var check: Boolean = false
-
-        check = if (inputChangeEmail.text.toString().isEmpty()) {
-            Toast.makeText(this, "New email address is required", Toast.LENGTH_LONG).show()
-            false
-        } else {
-            true
-        }
-
-        return check
-    }
-
-    private fun inputCheckPassword(): Boolean {
-        val check: Boolean
-
-        when {
-            inputNewPassword.text.toString().isEmpty() || inputConfirmNewPassword.text.toString().isEmpty() -> {
-                Toast.makeText(this, "Both password fields are required", Toast.LENGTH_LONG).show()
-                check = false
-            }
-            inputNewPassword.text.toString() != inputConfirmNewPassword.text.toString() -> {
-                Toast.makeText(this, "Passwords does not match", Toast.LENGTH_LONG).show()
-                check = false
-            }
-            inputNewPassword.text.toString().length < 6 -> {
-                Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_LONG).show()
-                check = false
-            }
-            //TODO check if 100% correct
-            !validatePassword(inputNewPassword.text.toString()) -> {
-                Toast.makeText(this, "Password has invalid characters", Toast.LENGTH_LONG).show()
-                check = false
-            }
-            else -> {
-                check = true
-            }
-        }
-
-        return check
-    }
-
-    private fun validatePassword(password: String): Boolean {
-        val pattern: Pattern
-        val passwordPattern = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$"
-        pattern = Pattern.compile(passwordPattern)
-        val matcher: Matcher = pattern.matcher(password)
-
-        return !matcher.matches()
     }
 
     private fun buttonEnableHandler() {

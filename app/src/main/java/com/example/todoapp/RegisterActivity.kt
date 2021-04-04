@@ -2,6 +2,7 @@ package com.example.todoapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -14,6 +15,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var reference: DatabaseReference
+    private lateinit var matcher: Matcher
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +74,10 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Email is required", Toast.LENGTH_LONG).show()
                 check = false
             }
+            !validateEmailFormat(inputNewEmail.text.toString()) -> {
+                Toast.makeText(this, "Email format is incorrect", Toast.LENGTH_LONG).show()
+                check = false
+            }
             inputNewPassword.text.toString().isEmpty() || inputConfirmPassword.text.toString().isEmpty() -> {
                 Toast.makeText(this, "Both password fields are required", Toast.LENGTH_LONG).show()
                 check = false
@@ -84,8 +90,8 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_LONG).show()
                 check = false
             }
-            //TODO check if 100% correct
-            !validatePassword(inputNewPassword.text.toString()) -> {
+
+            !validatePasswordFormat(inputNewPassword.text.toString()) -> {
                 Toast.makeText(this, "Password has invalid characters", Toast.LENGTH_LONG).show()
                 check = false
             }
@@ -97,12 +103,16 @@ class RegisterActivity : AppCompatActivity() {
         return check
     }
 
-    private fun validatePassword(password: String): Boolean {
-        val pattern: Pattern
-        val passwordPattern = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$"
-        pattern = Pattern.compile(passwordPattern)
-        val matcher: Matcher = pattern.matcher(password)
+    private fun validateEmailFormat(email: String): Boolean {
+        return(Patterns.EMAIL_ADDRESS.matcher(email).matches())
+    }
 
-        return !matcher.matches()
+    private fun validatePasswordFormat(password: String): Boolean {
+        val pattern: Pattern
+        val passwordPattern = "^(?=\\S+$).{6,}$"
+        pattern = Pattern.compile(passwordPattern)
+        val matcher = pattern.matcher(password)
+
+        return matcher.matches()
     }
 }

@@ -84,7 +84,9 @@ class TaskListActivity : AppCompatActivity() {
         alert.setTitle("Delete list")
         alert.setMessage("This will delete the list permanently!")
         alert.setPositiveButton("Delete") { _, _ ->
-            taskList.listTitle?.let { reference.child(it).removeValue() }
+            taskList.listTitle?.let {
+                reference.child(it).removeValue()
+            }
         }
 
         alert.setNegativeButton("Cancel") { dialog, _ ->
@@ -141,7 +143,6 @@ class TaskListActivity : AppCompatActivity() {
         alert.setView(editTextAddListTitle)
 
         alert.setPositiveButton("Save") { _, _ ->
-
             val newListTitle = editTextAddListTitle.text.toString().trim()
             val taskList = TaskList(newListTitle, 0, 0)
             val listId = reference.push().key

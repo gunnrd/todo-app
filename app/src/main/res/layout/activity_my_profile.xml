@@ -44,7 +44,7 @@
         >
 
         <TextView
-            android:id="@+id/changeEmailOrPassword"
+            android:id="@+id/textValidateAccountInfo"
             android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:text="@string/validate"

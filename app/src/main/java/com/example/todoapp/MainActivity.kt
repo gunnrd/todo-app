@@ -2,6 +2,7 @@ package com.example.todoapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.EditText
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
@@ -79,6 +80,10 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Email is required", Toast.LENGTH_LONG).show()
                 false
             }
+            !validateEmailFormat(inputEmail.text.toString()) -> {
+                Toast.makeText(this, "Email format is incorrect", Toast.LENGTH_LONG).show()
+                false
+            }
             inputPassword.text.toString().isEmpty() -> {
                 Toast.makeText(this, "Password is required", Toast.LENGTH_LONG).show()
                 false
@@ -87,5 +92,9 @@ class MainActivity : AppCompatActivity() {
                 true
             }
         }
+    }
+
+    private fun validateEmailFormat(email: String): Boolean {
+        return(Patterns.EMAIL_ADDRESS.matcher(email).matches())
     }
 }

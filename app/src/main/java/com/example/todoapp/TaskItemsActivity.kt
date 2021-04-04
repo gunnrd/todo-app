@@ -1,23 +1,19 @@
 package com.example.todoapp
 
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.tasks.TaskItemsAdapter
 import com.example.todoapp.tasks.data.TaskItems
-import com.example.todoapp.tasks.data.TaskList
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_task_items.*
-import kotlinx.android.synthetic.main.activity_task_list.*
 
 class TaskItemsActivity : AppCompatActivity(){
 

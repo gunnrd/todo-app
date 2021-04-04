@@ -1,8 +1,6 @@
 package com.example.todoapp.tasks
 
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +8,6 @@ import com.example.todoapp.TaskItemsActivity
 import com.example.todoapp.databinding.TaskListLayoutBinding
 import com.example.todoapp.tasks.data.TaskList
 import kotlinx.android.synthetic.main.task_list_layout.view.*
-
 
 class TaskListAdapter(private val taskList: MutableList<TaskList>, private val deleteListClick: (TaskList) -> Unit) : RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {
 

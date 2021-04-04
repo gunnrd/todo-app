@@ -6,7 +6,7 @@
         <item name="colorPrimaryVariant">@color/eton_blue</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/eton_blue</item>
+        <item name="colorSecondary">@color/ocean_green</item>
         <item name="colorSecondaryVariant">@color/deep_space_sparkle</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
