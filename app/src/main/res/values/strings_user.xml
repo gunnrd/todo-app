@@ -17,10 +17,10 @@
 
     <string name="register">Register</string>
     <string name="enter_current_password">Enter your password</string>
-    <string name="validate_user">Validate</string>
+    <string name="validate_user">Authenticate</string>
     <string name="enter_new_password">Enter new password</string>
     <string name="enter_new_email_address">Enter new email address</string>
-    <string name="validate">Validate account with password to update profile</string>
+    <string name="validate">Authenticate account to edit profile</string>
     <string name="submit_password">Submit new password</string>
     <string name="submit_email">Submit new email address</string>
     <string name="delete_account">Delete my account</string>

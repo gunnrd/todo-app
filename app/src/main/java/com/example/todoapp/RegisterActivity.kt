@@ -57,6 +57,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun verifyEmail() {
         val user = auth.currentUser
+
         user!!.sendEmailVerification().addOnCompleteListener(this) { sendVerification ->
             if (sendVerification.isSuccessful) {
                 Toast.makeText(this, "Verification email sent to " + user.email, Toast.LENGTH_SHORT).show()

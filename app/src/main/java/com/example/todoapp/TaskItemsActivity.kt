@@ -93,6 +93,11 @@ class TaskItemsActivity : AppCompatActivity(){
         //finish()
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
+    }
+
     private fun saveProgressBarStatus() {
         val listId = intent.getStringExtra("TITLE").toString()
 
@@ -110,11 +115,6 @@ class TaskItemsActivity : AppCompatActivity(){
         }
 
         reference.child(listId).child("/listItems").orderByChild("done").equalTo(true).addValueEventListener(eventListenerProgressBar)
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return super.onSupportNavigateUp()
     }
 
     private fun getTaskItemCount() {
@@ -136,8 +136,10 @@ class TaskItemsActivity : AppCompatActivity(){
 
     private fun deleteItem(taskItems: TaskItems) {
         val alert = AlertDialog.Builder(this)
+
         alert.setTitle("Delete item")
         alert.setMessage("This will delete the item permanently!")
+
         alert.setPositiveButton("Delete") { _, _ ->
             val listId = intent.getStringExtra("TITLE").toString()
             taskItems.taskName?.let { reference.child(listId).child("/listItems").child(it).removeValue() }
@@ -152,8 +154,10 @@ class TaskItemsActivity : AppCompatActivity(){
 
     private fun deleteAllItems() {
         val alert = AlertDialog.Builder(this)
+
         alert.setTitle("Delete all items")
         alert.setMessage("Warning! This will ALL items permanently!")
+
         alert.setPositiveButton("Delete") { _, _ ->
             val listId = intent.getStringExtra("TITLE").toString()
             reference.child(listId).child("/listItems").removeValue()

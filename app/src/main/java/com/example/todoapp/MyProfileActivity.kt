@@ -7,17 +7,16 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_my_profile.*
 import kotlinx.android.synthetic.main.activity_my_profile.inputNewPassword
-import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 class MyProfileActivity : AppCompatActivity() {
 
     private var auth = FirebaseAuth.getInstance()
-    private lateinit var matcher: Matcher
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +27,7 @@ class MyProfileActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        buttonDisableHandler()
+        disableHandler()
 
         buttonValidateUser.setOnClickListener {
             validateUser()
@@ -66,18 +65,14 @@ class MyProfileActivity : AppCompatActivity() {
 
         currentUser?.let { user ->
             val credential = EmailAuthProvider.getCredential(user.email!!, password)
+
             user.reauthenticate(credential).addOnCompleteListener { update ->
-
                 if (update.isSuccessful) {
-                    Toast.makeText(this, "Account validated", Toast.LENGTH_SHORT).show()
-                    inputCurrentPassword.text.clear()
-                    buttonEnableHandler()
-
-                    val textChangeValidate = "Account validated!"
-                    textValidateAccountInfo.text = textChangeValidate
-                    inputCurrentPassword.isEnabled = false
-                    buttonValidateUser.isEnabled = false
-
+                    val textChangeOnAuthtentication = "Account successfully authenticated"
+                    textValidateAccountInfo.text = textChangeOnAuthtentication
+                    inputCurrentPassword.isVisible = false
+                    buttonValidateUser.isVisible = false
+                    enableHandler()
                 } else {
                     Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show()
                 }
@@ -90,6 +85,7 @@ class MyProfileActivity : AppCompatActivity() {
 
         auth.currentUser?.let { updatePassword ->
             val alert = AlertDialog.Builder(this)
+
             alert.setTitle("Update password")
             alert.setMessage("Do you want to change password?")
 
@@ -155,6 +151,7 @@ class MyProfileActivity : AppCompatActivity() {
 
         auth.currentUser?.let { updateEmailAddress ->
             val alert = AlertDialog.Builder(this)
+            
             alert.setTitle("Update email")
             alert.setMessage("Do you want to change email address?")
 
@@ -239,15 +236,21 @@ class MyProfileActivity : AppCompatActivity() {
         alert.show()
     }
 
-    private fun buttonEnableHandler() {
+    private fun enableHandler() {
         buttonSubmitNewPassword.isEnabled = true
         buttonSubmitNewEmail.isEnabled = true
         buttonDeleteUser.isEnabled = true
+        inputNewPassword.isEnabled = true
+        inputConfirmNewPassword.isEnabled = true
+        inputChangeEmail.isEnabled = true
     }
 
-    private fun buttonDisableHandler() {
+    private fun disableHandler() {
         buttonSubmitNewPassword.isEnabled = false
         buttonSubmitNewEmail.isEnabled = false
         buttonDeleteUser.isEnabled = false
+        inputNewPassword.isEnabled = false
+        inputConfirmNewPassword.isEnabled = false
+        inputChangeEmail.isEnabled = false
     }
 }

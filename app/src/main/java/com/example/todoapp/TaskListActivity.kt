@@ -58,7 +58,6 @@ class TaskListActivity : AppCompatActivity() {
 
         buttonMyProfile.setOnClickListener {
             startActivity(Intent(this, MyProfileActivity::class.java))
-            println("test")
         }
 
         buttonChangeTheme.setOnClickListener {
@@ -83,6 +82,7 @@ class TaskListActivity : AppCompatActivity() {
 
         alert.setTitle("Delete list")
         alert.setMessage("This will delete the list permanently!")
+
         alert.setPositiveButton("Delete") { _, _ ->
             taskList.listTitle?.let {
                 reference.child(it).removeValue()
@@ -98,8 +98,10 @@ class TaskListActivity : AppCompatActivity() {
 
     private fun deleteAllLists() {
         val alert = AlertDialog.Builder(this)
+
         alert.setTitle("Delete all lists")
         alert.setMessage("Warning! This will ALL lists permanently!")
+
         alert.setPositiveButton("Delete") { _, _ ->
             reference.removeValue()
         }
