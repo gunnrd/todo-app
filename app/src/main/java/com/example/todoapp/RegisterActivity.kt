@@ -62,7 +62,7 @@ class RegisterActivity : AppCompatActivity() {
             if (sendVerification.isSuccessful) {
                 Toast.makeText(this, "Verification email sent to " + user.email, Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Failed to send verification email.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to send verification email", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -93,7 +93,7 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             !validatePasswordFormat(inputNewPassword.text.toString()) -> {
-                Toast.makeText(this, "Password has invalid characters", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Password has invalid characters. Whitespace is not allowed.", Toast.LENGTH_LONG).show()
                 check = false
             }
             else -> {

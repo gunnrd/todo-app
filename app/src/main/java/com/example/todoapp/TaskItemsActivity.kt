@@ -2,7 +2,6 @@ package com.example.todoapp
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.tasks.TaskItemsAdapter
 import com.example.todoapp.tasks.data.TaskItems
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_task_items.*
@@ -48,10 +46,7 @@ class TaskItemsActivity : AppCompatActivity(){
         recyclerView.adapter = TaskItemsAdapter(taskItems!!, this::saveCheckboxStatus, this::deleteItem)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val extendedFab = findViewById<View>(R.id.buttonExtendedTaskItems) as ExtendedFloatingActionButton
-        extendedFab.shrink()
-        buttonDeleteAllItems.hide()
-        buttonAddNewItem.hide()
+        resetFAButtons()
         buttonViewHandler()
 
         buttonAddNewItem.setOnClickListener {
@@ -116,7 +111,6 @@ class TaskItemsActivity : AppCompatActivity(){
 
         reference.child(listId).child("/listItems").orderByChild("done").equalTo(true)
             .addValueEventListener(eventListenerProgressBar)
-
     }
 
     private fun getTaskItemCount() {
@@ -141,7 +135,7 @@ class TaskItemsActivity : AppCompatActivity(){
         val alert = AlertDialog.Builder(this)
 
         alert.setTitle("Delete item")
-        alert.setMessage("This will delete the item permanently!")
+        alert.setMessage("This will delete the item permanently")
 
         alert.setPositiveButton("Delete") { _, _ ->
             val listId = intent.getStringExtra("TITLE").toString()
@@ -159,7 +153,7 @@ class TaskItemsActivity : AppCompatActivity(){
         val alert = AlertDialog.Builder(this)
 
         alert.setTitle("Delete all items")
-        alert.setMessage("Warning! This will delete ALL items permanently!")
+        alert.setMessage("Warning! This will delete ALL items permanently.")
 
         alert.setPositiveButton("Delete") { _, _ ->
             val listId = intent.getStringExtra("TITLE").toString()
@@ -219,7 +213,7 @@ class TaskItemsActivity : AppCompatActivity(){
         val editTextItemText = EditText(this)
 
         alert.setTitle("Add new item")
-        alert.setMessage("Enter task name")
+        alert.setMessage("Enter item text")
         alert.setView(editTextItemText)
 
         alert.setPositiveButton("Save") { _, _ ->
@@ -237,6 +231,12 @@ class TaskItemsActivity : AppCompatActivity(){
         alert.show()
     }
 
+    private fun resetFAButtons() {
+        buttonDeleteAllItems.hide()
+        buttonAddNewItem.hide()
+        buttonExtendedTaskItems.shrink()
+    }
+
     private fun buttonViewHandler() {
         var isVisible = false
 
@@ -247,9 +247,7 @@ class TaskItemsActivity : AppCompatActivity(){
                 buttonExtendedTaskItems.extend()
                 true
             } else {
-                buttonDeleteAllItems.hide()
-                buttonAddNewItem.hide()
-                buttonExtendedTaskItems.shrink()
+                resetFAButtons()
                 false
             }
         }

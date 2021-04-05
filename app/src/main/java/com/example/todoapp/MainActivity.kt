@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                 false
             }
             !validateEmailFormat(inputEmail.text.toString()) -> {
-                Toast.makeText(this, "Email format is incorrect", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Email format is incorrect.", Toast.LENGTH_LONG).show()
                 false
             }
             inputPassword.text.toString().isEmpty() -> {

@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.tasks.TaskListAdapter
 import com.example.todoapp.tasks.data.TaskList
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -39,6 +38,8 @@ class TaskListActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(false)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
+        database.keepSynced(true)
+
         val currentUser = auth.currentUser
         reference = database.child(currentUser!!.uid).child("To do lists")
 
@@ -49,11 +50,7 @@ class TaskListActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         getDataFromFirebase()
-
-        val extendedFab = findViewById<View>(R.id.buttonExtendedTaskList) as ExtendedFloatingActionButton
-        extendedFab.shrink()
-        buttonDeleteAllLists.hide()
-        buttonAddNewTaskList.hide()
+        resetFAButtons()
         buttonViewHandler()
 
         buttonMyProfile.setOnClickListener {
@@ -104,10 +101,12 @@ class TaskListActivity : AppCompatActivity() {
 
         alert.setPositiveButton("Delete") { _, _ ->
             reference.removeValue()
+            resetFAButtons()
         }
 
         alert.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
+            resetFAButtons()
         }
 
         alert.show()
@@ -153,24 +152,28 @@ class TaskListActivity : AppCompatActivity() {
                 newListTitle.isEmpty() ->
                     Toast.makeText(this, "List title is required", Toast.LENGTH_SHORT).show()
                 listId == null ->
-                    Toast.makeText(this, "Error saving list. List id is null", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error saving list. List id is null.", Toast.LENGTH_SHORT).show()
                 listId.contentEquals(newListTitle) ->
                     Toast.makeText(this, "List name already exists. Enter another name.", Toast.LENGTH_SHORT).show()
                 else -> {
                     reference.child(newListTitle).setValue(taskList)
-
-                    buttonExtendedTaskList.shrink()
-                    buttonDeleteAllLists.hide()
-                    buttonAddNewTaskList.hide()
+                    resetFAButtons()
                 }
             }
         }
 
         alert.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
+            resetFAButtons()
         }
 
         alert.show()
+    }
+
+    private fun resetFAButtons() {
+        buttonExtendedTaskList.shrink()
+        buttonDeleteAllLists.hide()
+        buttonAddNewTaskList.hide()
     }
 
     private fun buttonViewHandler() {
@@ -183,9 +186,7 @@ class TaskListActivity : AppCompatActivity() {
                 buttonExtendedTaskList.extend()
                 true
             } else {
-                buttonDeleteAllLists.hide()
-                buttonAddNewTaskList.hide()
-                buttonExtendedTaskList.shrink()
+                resetFAButtons()
                 false
             }
         }

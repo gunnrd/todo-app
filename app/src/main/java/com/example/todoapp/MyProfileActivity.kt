@@ -68,8 +68,8 @@ class MyProfileActivity : AppCompatActivity() {
 
             user.reauthenticate(credential).addOnCompleteListener { update ->
                 if (update.isSuccessful) {
-                    val textChangeOnAuthtentication = "Account successfully authenticated"
-                    textValidateAccountInfo.text = textChangeOnAuthtentication
+                    val textChangeOnAuthentication = "Account successfully authenticated"
+                    textValidateAccountInfo.text = textChangeOnAuthentication
                     inputCurrentPassword.isVisible = false
                     buttonValidateUser.isVisible = false
                     enableHandler()
@@ -126,7 +126,7 @@ class MyProfileActivity : AppCompatActivity() {
                 check = false
             }
             !validatePasswordFormat(inputNewPassword.text.toString()) -> {
-                Toast.makeText(this, "Password has invalid characters", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Password has invalid characters. Whitespace is not allowed.", Toast.LENGTH_LONG).show()
                 check = false
             }
             else -> {
@@ -152,13 +152,13 @@ class MyProfileActivity : AppCompatActivity() {
         auth.currentUser?.let { updateEmailAddress ->
             val alert = AlertDialog.Builder(this)
             
-            alert.setTitle("Update email")
+            alert.setTitle("Update email address")
             alert.setMessage("Do you want to change email address?")
 
             alert.setPositiveButton("Ok") { _, _ ->
                 updateEmailAddress.updateEmail(email).addOnCompleteListener { update ->
                     if (update.isSuccessful) {
-                        Toast.makeText(this, "Email updated", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Email address updated", Toast.LENGTH_LONG).show()
                         auth.signOut()
                         startActivity(Intent(this, MainActivity::class.java))
                     } else {
@@ -199,11 +199,22 @@ class MyProfileActivity : AppCompatActivity() {
         val alert = AlertDialog.Builder(this)
 
         alert.setTitle("Delete account")
-        alert.setMessage("Warning! This will delete your account permanently!")
+        alert.setMessage("Warning! This will delete your account permanently.")
 
         alert.setPositiveButton("Delete") { _, _ ->
+
+            //TODO fix delete to delete user from database
+            /*
+            val reference: DatabaseReference
+            val database = FirebaseDatabase.getInstance().reference
+            reference = database.child(auth.currentUser!!.uid)
+            reference.removeValue()*/
+
             auth.currentUser!!.delete().addOnCompleteListener { delete ->
                 if (delete.isSuccessful) {
+
+
+
                     Toast.makeText(this, "Account deleted", Toast.LENGTH_SHORT).show()
                     auth.signOut()
                     startActivity(Intent(this, MainActivity::class.java))

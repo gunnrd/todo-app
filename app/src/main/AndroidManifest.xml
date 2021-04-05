@@ -8,6 +8,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_icon_sticky_note_round"
         android:supportsRtl="true"
+        android:name=".OfflinePersistence"
         android:theme="@style/Theme.TodoApp">
         <activity
             android:name=".MainActivity"
