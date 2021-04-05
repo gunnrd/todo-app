@@ -43,9 +43,43 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { login ->
 
             if (login.isSuccessful) {
-                startActivity(Intent(this, TaskListActivity::class.java))
+
+                if (auth.currentUser!!.isEmailVerified) {
+                    startActivity(Intent(this, TaskListActivity::class.java))
+                } else {
+                    verifyAlert()
+                }
             } else {
                 Toast.makeText(this, "Login failed", LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun verifyAlert() {
+        val alert = AlertDialog.Builder(this)
+
+        alert.setTitle("Please verify email address before login")
+        alert.setMessage("Do you need a new verification sent to email?")
+
+        alert.setPositiveButton("Ok") { _, _ ->
+            verifyEmail()
+        }
+
+        alert.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        alert.show()
+    }
+
+    private fun verifyEmail() {
+        val user = auth.currentUser
+
+        user!!.sendEmailVerification().addOnCompleteListener(this) { sendVerification ->
+            if (sendVerification.isSuccessful) {
+                Toast.makeText(this, "Verification email sent to " + user.email, Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Failed to send verification email. If you recently registered, check your spam folder.", Toast.LENGTH_LONG).show()
             }
         }
     }
