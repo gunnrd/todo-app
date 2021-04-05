@@ -148,13 +148,9 @@ class TaskListActivity : AppCompatActivity() {
             val taskList = TaskList(newListTitle, 0, 0)
             reference.push().key
 
-            when {
-                newListTitle.isEmpty() ->
-                    Toast.makeText(this, "List title is required", Toast.LENGTH_SHORT).show()
-                else -> {
-                    reference.child(newListTitle).setValue(taskList)
-                    resetFAButtons()
-                }
+            if (!invalidCharacters(newListTitle)) {
+                reference.child(newListTitle).setValue(taskList)
+                resetFAButtons()
             }
         }
 
@@ -186,5 +182,53 @@ class TaskListActivity : AppCompatActivity() {
                 false
             }
         }
+    }
+
+    private fun invalidCharacters(listName: String): Boolean {
+        val check: Boolean
+
+        when {
+            listName.isEmpty() -> {
+                Toast.makeText(this, "List name is required", Toast.LENGTH_SHORT).show()
+                check = true
+            }
+            listName.contains('.') -> {
+                Toast.makeText(this, "List name contains invalid characters.\n .#$`´[]/ is not allowed.", Toast.LENGTH_LONG).show()
+                check = true
+            }
+            listName.contains('#') -> {
+                Toast.makeText(this, "List name contains invalid characters.\n .#$`´[]/ is not allowed.", Toast.LENGTH_LONG).show()
+                check = true
+            }
+            listName.contains('$') -> {
+                Toast.makeText(this, "List name contains invalid characters.\n .#$`´[]/ is not allowed.", Toast.LENGTH_LONG).show()
+                check = true
+            }
+            listName.contains('`') -> {
+                Toast.makeText(this, "List name contains invalid characters.\n .#$`´[]/ is not allowed.", Toast.LENGTH_LONG).show()
+                check = true
+            }
+            listName.contains('´') -> {
+                Toast.makeText(this, "List name contains invalid characters.\n .#$`´[]/ is not allowed.", Toast.LENGTH_LONG).show()
+                check = true
+            }
+            listName.contains('[') -> {
+                Toast.makeText(this, "List name contains invalid characters.\n .#$`´[]/ is not allowed.", Toast.LENGTH_LONG).show()
+                check = true
+            }
+            listName.contains(']') -> {
+                Toast.makeText(this, "List name contains invalid characters.\n .#$`´[]/ is not allowed.", Toast.LENGTH_LONG).show()
+                check = true
+            }
+            listName.contains('/') -> {
+                Toast.makeText(this, "List name contains invalid characters.\n .#$`´[]/ is not allowed.", Toast.LENGTH_LONG).show()
+                check = true
+            }
+            else -> {
+                check = false
+            }
+        }
+
+        return check
     }
 }

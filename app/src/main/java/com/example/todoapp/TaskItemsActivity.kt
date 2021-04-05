@@ -13,6 +13,7 @@ import com.example.todoapp.tasks.data.TaskItems
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_task_items.*
+import java.util.regex.Pattern
 
 class TaskItemsActivity : AppCompatActivity(){
 
@@ -222,9 +223,7 @@ class TaskItemsActivity : AppCompatActivity(){
             val newItem = TaskItems(newListItemText)
             val listId = listTitle.text.toString()
 
-            if (newListItemText.isEmpty()) {
-                Toast.makeText(this, "Item name is required", Toast.LENGTH_SHORT).show()
-            } else {
+            if (!invalidCharacters(newListItemText)) {
                 reference.child(listId).child("listItems").child(newListItemText).setValue(newItem)
             }
         }
@@ -256,5 +255,53 @@ class TaskItemsActivity : AppCompatActivity(){
                 false
             }
         }
+    }
+
+    private fun invalidCharacters(itemName: String): Boolean {
+        val check: Boolean
+
+        when {
+            itemName.isEmpty() -> {
+                Toast.makeText(this, "Item name is required", Toast.LENGTH_SHORT).show()
+                check = true
+            }
+            itemName.contains('.') -> {
+                Toast.makeText(this, "Item name contains invalid characters.\n .#$`´[]/ is not allowed.", Toast.LENGTH_LONG).show()
+                check = true
+            }
+            itemName.contains('#') -> {
+                Toast.makeText(this, "Item name contains invalid characters.\n .#$`´[]/ is not allowed.", Toast.LENGTH_LONG).show()
+                check = true
+            }
+            itemName.contains('$') -> {
+                Toast.makeText(this, "Item name contains invalid characters.\n .#$`´[]/ is not allowed.", Toast.LENGTH_LONG).show()
+                check = true
+            }
+            itemName.contains('`') -> {
+                Toast.makeText(this, "Item name contains invalid characters.\n .#$`´[]/ is not allowed.", Toast.LENGTH_LONG).show()
+                check = true
+            }
+            itemName.contains('´') -> {
+                Toast.makeText(this, "Item name contains invalid characters.\n .#$`´[]/ is not allowed.", Toast.LENGTH_LONG).show()
+                check = true
+            }
+            itemName.contains('[') -> {
+                Toast.makeText(this, "Item name contains invalid characters.\n .#$`´[]/ is not allowed.", Toast.LENGTH_LONG).show()
+                check = true
+            }
+            itemName.contains(']') -> {
+                Toast.makeText(this, "Item name contains invalid characters.\n .#$`´[]/ is not allowed.", Toast.LENGTH_LONG).show()
+                check = true
+            }
+            itemName.contains('/') -> {
+                Toast.makeText(this, "Item name contains invalid characters.\n .#$`´[]/ is not allowed.", Toast.LENGTH_LONG).show()
+                check = true
+            }
+            else -> {
+                check = false
+            }
+        }
+
+        return check
     }
 }

@@ -67,6 +67,19 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    private fun validateEmailFormat(email: String): Boolean {
+        return(Patterns.EMAIL_ADDRESS.matcher(email).matches())
+    }
+
+    private fun validatePasswordFormat(password: String): Boolean {
+        val pattern: Pattern
+        val passwordPattern = "^(?=\\S+$).{6,}$"
+        pattern = Pattern.compile(passwordPattern)
+        val matcher = pattern.matcher(password)
+
+        return matcher.matches()
+    }
+
     private fun inputCheck(): Boolean {
         val check: Boolean
 
@@ -91,7 +104,6 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_LONG).show()
                 check = false
             }
-
             !validatePasswordFormat(inputNewPassword.text.toString()) -> {
                 Toast.makeText(this, "Password has invalid characters. Whitespace is not allowed.", Toast.LENGTH_LONG).show()
                 check = false
@@ -102,18 +114,5 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         return check
-    }
-
-    private fun validateEmailFormat(email: String): Boolean {
-        return(Patterns.EMAIL_ADDRESS.matcher(email).matches())
-    }
-
-    private fun validatePasswordFormat(password: String): Boolean {
-        val pattern: Pattern
-        val passwordPattern = "^(?=\\S+$).{6,}$"
-        pattern = Pattern.compile(passwordPattern)
-        val matcher = pattern.matcher(password)
-
-        return matcher.matches()
     }
 }
