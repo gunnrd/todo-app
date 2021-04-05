@@ -3,6 +3,7 @@ package com.example.todoapp
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -221,7 +222,11 @@ class TaskItemsActivity : AppCompatActivity(){
             val newItem = TaskItems(newListItemText)
             val listId = listTitle.text.toString()
 
-            reference.child(listId).child("listItems").child(newListItemText).setValue(newItem)
+            if (newListItemText.isEmpty()) {
+                Toast.makeText(this, "Item name is required", Toast.LENGTH_SHORT).show()
+            } else {
+                reference.child(listId).child("listItems").child(newListItemText).setValue(newItem)
+            }
         }
 
         alert.setNegativeButton("Cancel") { dialog, _ ->

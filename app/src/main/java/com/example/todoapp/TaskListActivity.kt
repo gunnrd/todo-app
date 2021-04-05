@@ -146,15 +146,11 @@ class TaskListActivity : AppCompatActivity() {
         alert.setPositiveButton("Save") { _, _ ->
             val newListTitle = editTextAddListTitle.text.toString().trim()
             val taskList = TaskList(newListTitle, 0, 0)
-            val listId = reference.push().key
+            reference.push().key
 
             when {
                 newListTitle.isEmpty() ->
                     Toast.makeText(this, "List title is required", Toast.LENGTH_SHORT).show()
-                listId == null ->
-                    Toast.makeText(this, "Error saving list. List id is null.", Toast.LENGTH_SHORT).show()
-                listId.contentEquals(newListTitle) ->
-                    Toast.makeText(this, "List name already exists. Enter another name.", Toast.LENGTH_SHORT).show()
                 else -> {
                     reference.child(newListTitle).setValue(taskList)
                     resetFAButtons()
