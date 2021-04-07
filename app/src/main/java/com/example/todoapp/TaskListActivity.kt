@@ -74,44 +74,6 @@ class TaskListActivity : AppCompatActivity() {
         }
     }
 
-    private fun deleteCardListOnClick(taskList: TaskList) {
-        val alert = AlertDialog.Builder(this)
-
-        alert.setTitle("Delete list")
-        alert.setMessage("This will delete the list permanently!")
-
-        alert.setPositiveButton("Delete") { _, _ ->
-            taskList.listTitle?.let {
-                reference.child(it).removeValue()
-            }
-        }
-
-        alert.setNegativeButton("Cancel") { dialog, _ ->
-            dialog.dismiss()
-        }
-
-        alert.show()
-    }
-
-    private fun deleteAllLists() {
-        val alert = AlertDialog.Builder(this)
-
-        alert.setTitle("Delete all lists")
-        alert.setMessage("Warning! This will delete ALL lists permanently!")
-
-        alert.setPositiveButton("Delete") { _, _ ->
-            reference.removeValue()
-            resetFAButtons()
-        }
-
-        alert.setNegativeButton("Cancel") { dialog, _ ->
-            dialog.dismiss()
-            resetFAButtons()
-        }
-
-        alert.show()
-    }
-
     private fun getDataFromFirebase() {
         reference.addValueEventListener(object : ValueEventListener {
 
@@ -162,6 +124,44 @@ class TaskListActivity : AppCompatActivity() {
         alert.show()
     }
 
+    private fun deleteCardListOnClick(taskList: TaskList) {
+        val alert = AlertDialog.Builder(this)
+
+        alert.setTitle("Delete list")
+        alert.setMessage("This will delete the list permanently!")
+
+        alert.setPositiveButton("Delete") { _, _ ->
+            taskList.listTitle?.let {
+                reference.child(it).removeValue()
+            }
+        }
+
+        alert.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        alert.show()
+    }
+
+    private fun deleteAllLists() {
+        val alert = AlertDialog.Builder(this)
+
+        alert.setTitle("Delete all lists")
+        alert.setMessage("Warning! This will delete ALL lists permanently.")
+
+        alert.setPositiveButton("Delete") { _, _ ->
+            reference.removeValue()
+            resetFAButtons()
+        }
+
+        alert.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+            resetFAButtons()
+        }
+
+        alert.show()
+    }
+    
     private fun resetFAButtons() {
         buttonExtendedTaskList.shrink()
         buttonDeleteAllLists.hide()

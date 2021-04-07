@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_my_profile.*
 import kotlinx.android.synthetic.main.activity_my_profile.inputNewPassword
 import java.util.regex.Pattern
@@ -67,6 +69,7 @@ class MyProfileActivity : AppCompatActivity() {
             val credential = EmailAuthProvider.getCredential(user.email!!, password)
 
             user.reauthenticate(credential).addOnCompleteListener { update ->
+
                 if (update.isSuccessful) {
                     val textChangeOnAuthentication = "Account successfully authenticated"
                     textValidateAccountInfo.text = textChangeOnAuthentication
@@ -153,7 +156,7 @@ class MyProfileActivity : AppCompatActivity() {
             val alert = AlertDialog.Builder(this)
             
             alert.setTitle("Update email address")
-            alert.setMessage("Do you want to change email address?")
+            alert.setMessage("Do you want to change email address? If changed you will be logged out.")
 
             alert.setPositiveButton("Ok") { _, _ ->
                 updateEmailAddress.updateEmail(email).addOnCompleteListener { update ->
@@ -202,19 +205,13 @@ class MyProfileActivity : AppCompatActivity() {
         alert.setMessage("Warning! This will delete your account permanently.")
 
         alert.setPositiveButton("Delete") { _, _ ->
-
-            //TODO fix delete to delete user from database
-            /*
             val reference: DatabaseReference
             val database = FirebaseDatabase.getInstance().reference
             reference = database.child(auth.currentUser!!.uid)
-            reference.removeValue()*/
+            reference.removeValue()
 
             auth.currentUser!!.delete().addOnCompleteListener { delete ->
                 if (delete.isSuccessful) {
-
-
-
                     Toast.makeText(this, "Account deleted", Toast.LENGTH_SHORT).show()
                     auth.signOut()
                     startActivity(Intent(this, MainActivity::class.java))

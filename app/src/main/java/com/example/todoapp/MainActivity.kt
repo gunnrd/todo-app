@@ -59,9 +59,9 @@ class MainActivity : AppCompatActivity() {
         val alert = AlertDialog.Builder(this)
 
         alert.setTitle("Please verify email address before login")
-        alert.setMessage("Do you need a new verification sent to email?")
+        alert.setMessage("Do you need a new email to verify your account?")
 
-        alert.setPositiveButton("Ok") { _, _ ->
+        alert.setPositiveButton("Yes") { _, _ ->
             verifyEmail()
         }
 
