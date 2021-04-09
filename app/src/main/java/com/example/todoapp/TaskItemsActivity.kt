@@ -23,9 +23,9 @@ class TaskItemsActivity : AppCompatActivity(){
     private lateinit var recyclerView: RecyclerView
     private var taskItems: MutableList<TaskItems>? = null
 
-    private lateinit var eventListenerProgressBar: ValueEventListener
-    private lateinit var eventListenerGetTaskItemCount: ValueEventListener
     private lateinit var eventListenerGetDataFromFirebase: ValueEventListener
+    private lateinit var eventListenerGetTaskItemCount: ValueEventListener
+    private lateinit var eventListenerProgressBar: ValueEventListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,19 +68,19 @@ class TaskItemsActivity : AppCompatActivity(){
 
     override fun onStop() {
         super.onStop()
-        cleanUpEventListeners()
-    }
-
-    private fun cleanUpEventListeners() {
-        reference.removeEventListener(eventListenerProgressBar)
-        reference.removeEventListener(eventListenerGetTaskItemCount)
-        reference.removeEventListener(eventListenerGetDataFromFirebase)
+        removeEventListeners()
     }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         finish()
         return super.onSupportNavigateUp()
+    }
+
+    private fun removeEventListeners() {
+        reference.removeEventListener(eventListenerGetDataFromFirebase)
+        reference.removeEventListener(eventListenerGetTaskItemCount)
+        reference.removeEventListener(eventListenerProgressBar)
     }
 
     private fun getDataFromFirebase() {
@@ -106,7 +106,7 @@ class TaskItemsActivity : AppCompatActivity(){
             }
         }
 
-        reference.child(listId.toString()).child("listItems")
+        eventListenerGetDataFromFirebase = reference.child(listId.toString()).child("listItems")
             .addValueEventListener(eventListenerGetDataFromFirebase)
     }
 
@@ -144,6 +144,7 @@ class TaskItemsActivity : AppCompatActivity(){
                 if (snapshot.value == null) {
                     return
                 }
+
                 val count = snapshot.childrenCount.toInt()
 
                 progressBarItems.max = count
@@ -165,6 +166,7 @@ class TaskItemsActivity : AppCompatActivity(){
                 if (snapshot.value == null) {
                     return
                 }
+
                 val countCheckedItems = snapshot.childrenCount.toInt()
                 reference.child(listId).child("/progress").setValue(countCheckedItems)
                 progressBarItems.progress = countCheckedItems

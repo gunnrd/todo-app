@@ -29,6 +29,8 @@ class TaskListActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private var taskList: MutableList<TaskList>? = null
 
+    private lateinit var eventListenerGetDataFromFirebase: ValueEventListener
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_list)
@@ -74,8 +76,24 @@ class TaskListActivity : AppCompatActivity() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        reference.removeEventListener(eventListenerGetDataFromFirebase)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getDataFromFirebase()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        reference.removeEventListener(eventListenerGetDataFromFirebase)
+    }
+
     private fun getDataFromFirebase() {
-        reference.addValueEventListener(object : ValueEventListener {
+
+        eventListenerGetDataFromFirebase = object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 val allLists = taskList
@@ -94,7 +112,9 @@ class TaskListActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
                 Log.w("MainActivity", "loadItem:onCancelled database error", error.toException())
             }
-        })
+        }
+
+        eventListenerGetDataFromFirebase = reference.addValueEventListener(eventListenerGetDataFromFirebase)
     }
 
     private fun addNewListDialog() {
