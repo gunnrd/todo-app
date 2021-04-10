@@ -3,6 +3,7 @@ package com.example.todoapp.tasks
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.TaskItemsActivity
 import com.example.todoapp.databinding.TaskListLayoutBinding
@@ -28,7 +29,11 @@ class TaskListAdapter(private val taskList: MutableList<TaskList>, private val d
             binding.cardProgressBar.progress = list.progress!!
 
             binding.cardDeleteButton.setOnClickListener {
-                deleteListClick(list)
+                if (list.itemCount == 0) {
+                    deleteListClick(list)
+                } else {
+                    deleteInfo()
+                }
             }
         }
 
@@ -41,6 +46,19 @@ class TaskListAdapter(private val taskList: MutableList<TaskList>, private val d
                 }
                 context.startActivity(intent)
             }
+        }
+
+        private fun deleteInfo() {
+            val alert = AlertDialog.Builder(context)
+
+            alert.setTitle("Delete all items in list before deleting list")
+            alert.setMessage("Sorry for the inconvenience")
+
+            alert.setPositiveButton("Ok") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            alert.show()
         }
     }
 

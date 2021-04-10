@@ -24,7 +24,7 @@ class TaskListActivity : AppCompatActivity() {
 
     private lateinit var reference: DatabaseReference
     private var database = FirebaseDatabase.getInstance().reference
-    private var auth = FirebaseAuth.getInstance()
+    private var currentUser = FirebaseAuth.getInstance().currentUser
 
     private lateinit var recyclerView: RecyclerView
     private var taskList: MutableList<TaskList>? = null
@@ -42,7 +42,6 @@ class TaskListActivity : AppCompatActivity() {
 
         database.keepSynced(true)
 
-        val currentUser = auth.currentUser
         reference = database.child(currentUser!!.uid).child("To do lists")
 
         taskList = mutableListOf()
@@ -130,7 +129,7 @@ class TaskListActivity : AppCompatActivity() {
             val taskList = TaskList(newListTitle, 0, 0)
             reference.push().key
 
-            if (!invalidCharacters(newListTitle)) {
+            if (!invalidCharactersFirebase(newListTitle)) {
                 reference.child(newListTitle).setValue(taskList)
                 resetFAButtons()
             }
@@ -181,7 +180,7 @@ class TaskListActivity : AppCompatActivity() {
 
         alert.show()
     }
-    
+
     private fun resetFAButtons() {
         buttonExtendedTaskList.shrink()
         buttonDeleteAllLists.hide()
@@ -204,7 +203,7 @@ class TaskListActivity : AppCompatActivity() {
         }
     }
 
-    private fun invalidCharacters(listName: String): Boolean {
+    private fun invalidCharactersFirebase(listName: String): Boolean {
         val check: Boolean
 
         when {

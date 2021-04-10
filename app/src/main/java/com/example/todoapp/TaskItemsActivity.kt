@@ -18,7 +18,7 @@ class TaskItemsActivity : AppCompatActivity(){
 
     private lateinit var reference: DatabaseReference
     private var database = FirebaseDatabase.getInstance().reference
-    private var auth = FirebaseAuth.getInstance()
+    private var currentUser = FirebaseAuth.getInstance().currentUser
 
     private lateinit var recyclerView: RecyclerView
     private var taskItems: MutableList<TaskItems>? = null
@@ -38,7 +38,6 @@ class TaskItemsActivity : AppCompatActivity(){
 
         listTitle.text = intent.getStringExtra("TITLE")
 
-        val currentUser = auth.currentUser
         reference = database.child(currentUser!!.uid).child("To do lists")
 
         taskItems = mutableListOf()
@@ -123,7 +122,7 @@ class TaskItemsActivity : AppCompatActivity(){
             val newItem = TaskItems(newListItemText)
             val listId = listTitle.text.toString()
 
-            if (!invalidCharacters(newListItemText)) {
+            if (!invalidCharactersFirebase(newListItemText)) {
                 reference.child(listId).child("listItems").child(newListItemText).setValue(newItem)
             }
         }
@@ -141,10 +140,6 @@ class TaskItemsActivity : AppCompatActivity(){
         eventListenerGetTaskItemCount = object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.value == null) {
-                    return
-                }
-
                 val count = snapshot.childrenCount.toInt()
 
                 progressBarItems.max = count
@@ -163,10 +158,6 @@ class TaskItemsActivity : AppCompatActivity(){
 
         eventListenerProgressBar = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.value == null) {
-                    return
-                }
-
                 val countCheckedItems = snapshot.childrenCount.toInt()
                 reference.child(listId).child("/progress").setValue(countCheckedItems)
                 progressBarItems.progress = countCheckedItems
@@ -254,7 +245,7 @@ class TaskItemsActivity : AppCompatActivity(){
         }
     }
 
-    private fun invalidCharacters(itemName: String): Boolean {
+    private fun invalidCharactersFirebase(itemName: String): Boolean {
         val check: Boolean
 
         when {
