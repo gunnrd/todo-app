@@ -205,11 +205,6 @@ class MyProfileActivity : AppCompatActivity() {
         alert.setMessage("Warning! This will delete your account permanently.")
 
         alert.setPositiveButton("Delete") { _, _ ->
-            val reference: DatabaseReference
-            val database = FirebaseDatabase.getInstance().reference
-            reference = database.child(auth.currentUser!!.uid)
-            reference.removeValue()
-
             auth.currentUser!!.delete().addOnCompleteListener { delete ->
                 if (delete.isSuccessful) {
                     Toast.makeText(this, "Account deleted", Toast.LENGTH_SHORT).show()
