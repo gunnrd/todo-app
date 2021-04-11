@@ -41,7 +41,7 @@ https://appdistribution.firebase.dev/i/8ce95a62a597f51f
 #### Login and register new user
 </br>
 To use the app you need to have an user account and verified email address. The storage of the to do lists in Firebase is stored under a unique user ID that is associated with the email you register with. The login activity gives the user the options to log in, get email to set new password if forgotten and register and sign up. If the user already has an account and has logged in previously, the user is forwarded directly to their to do lists. If the user previously logged in, the app can be used as usual even if the user does not have an internet connection. With the exception of editing the user profile. When connected to the internet again, the app synchronizes changes to the database.
-
+</br>
 The register activity checks that the user fills in all the fields, email format is correct, password doesn't contain whitespace and that the passwords match. The app then sends the user a verification mail to the registered email address.
 
 <img src=".\screenshots\login.jpg" alt="login"  width="30%" height="30%" /> <img src=".\screenshots\register.jpg" alt="register" width="30%" height="30%" />
@@ -51,9 +51,9 @@ The register activity checks that the user fills in all the fields, email format
 #### To do lists
 </br>
 The lists is shown with cards inside a scroll view. The floating action button is for adding new lists that triggers a alert dialog where the users can enter new list name or cancel.
-
+</br>
 The cards have a progress bar which shows progress of checked items in the list and an itembutton for deleting the list. The delete feature has given me a lot of headaches because the values for setting and updating the progress bar are connected to eventListeners in list items activity. I got help for a workaround for getting the delete feature to work, but this caused the progress bars and item deletion to malfunction. The solution to this problem I chose is to promt the user to delete all items in the list before deleting the list. This is not the most user friendly solution but deletion works fine if the list is empty.
-
+</br>
 The toolbar has two itembuttons for navigating to "my profile" activity and for changing to night mode theme.
 
 <img src=".\screenshots\taskList_light.jpg" alt="taskList_light" width="30%" height="30%" /> <img src=".\screenshots\taskList_dark.jpg" alt="taskList_dark" width="30%" height="30%" />
