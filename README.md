@@ -1,23 +1,21 @@
 # To do app
 
 This is a simple app where you can create to do lists and add items within every list.
-
+<br/><br/>
 
 
 ## Description
 
 The app is a school project in the subject IKT205 - application development at the University of Agder, Grimstad. It is written in Android Studio, Kotlin. The app uses Firebase realtime database with email/password authentication.
-
+<br/><br/>
 
 
 ## Content
-
+<br/>
 ### App icon
 
-
-
-<img src=".\screenshots\app_icon.jpg" alt="app_icon" style="zoom:30%;" /> 
-
+<img src=".\screenshots\app_icon.jpg" alt="app_icon" style="max-width: 50%; max-height: 50%" /> 
+<br/><br/>
 
 
 ### Login and register new user
@@ -27,7 +25,7 @@ To use the app you need to have an user account and verified email address. The 
 The register activity checks that the user fills in all the fields, email format is correct, password doesn't contain whitespace and that the passwords match.   The app then sends the user a verification mail to the registered email address.
 
 <img src=".\screenshots\login.jpg" alt="login" style="zoom:30%;" /> <img src=".\screenshots\register.jpg" alt="register" style="zoom:30%;" />
-
+<br/><br/>
 
 
 ### To do lists
@@ -39,7 +37,7 @@ The cards have a progress bar which shows progress of checked items in the list 
 The toolbar has two itembuttons for navigating to "my profile" activity and for changing to night mode theme.
 
 <img src=".\screenshots\taskList_light.jpg" alt="taskList_light" style="zoom:70%;" /> <img src=".\screenshots\taskList_dark.jpg" alt="taskList_dark" style="zoom:70%;" />
-
+<br/><br/>
 
 
 ### To do items
@@ -47,7 +45,7 @@ The toolbar has two itembuttons for navigating to "my profile" activity and for 
 The extended floating action button expands and contain buttons for adding a new item and deleting all items. The progressbar updates dynamically when the checkboxes are clicked.
 
 <img src=".\screenshots\taskItems_light.jpg" alt="taskItems_01" style="zoom:30%;" /> <img src=".\screenshots\taskItems_light_fab.jpg" alt="taskItems_02" style="zoom:30%;" />
-
+<br/><br/>
 
 
 ### My profile
@@ -55,7 +53,7 @@ The extended floating action button expands and contain buttons for adding a new
 Here the user can edit the password, change the associated email address, delete their account or log out. Associated items are initially disabled until the user authenticates their account.
 
 <img src=".\screenshots\my_profile_authenticate.jpg" alt="my_profile_authenticate" style="zoom:30%;" /> <img src=".\screenshots\my_profile_authenticated.jpg" alt="my_profile_authenticated" style="zoom:30%;" />
-
+<br/><br/>
 
 
 ### Extra information
@@ -63,7 +61,7 @@ Here the user can edit the password, change the associated email address, delete
 For all fields for user input there are added checks for required fields and also valid and correct input for each field. For saving a new lists and list items, input are checked so that it doesn't contain characters that are incompatible entries in the database. These features are displayed with alert dialogs which has "save/ok" and "cancel" buttons. The app returns toasts for all input errors.
 
 <img src=".\screenshots\database.jpg" alt="database" style="zoom:30%;" /> 
-
+<br/><br/>
 
 
 ### Dummy account for easy testing
