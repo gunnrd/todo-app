@@ -15,8 +15,7 @@ The app is a school project in the subject IKT205 - application development at t
 
 ### App icon
 <br/>
-![app_icon](.\screenshots\app_icon.jpg) <!-- .element height="50%" width="50%" -->
-<img src=".\screenshots\app_icon.jpg" alt="app_icon" style="max-width: 50%;" style="max-height: 50%;" /> 
+<img src=".\screenshots\app_icon.jpg" alt="app_icon" width="60%" height="60%" /> 
 <br/><br/>
 
 
