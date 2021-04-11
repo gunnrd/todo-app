@@ -51,8 +51,8 @@ class TaskListAdapter(private val taskList: MutableList<TaskList>, private val d
         private fun deleteInfo() {
             val alert = AlertDialog.Builder(context)
 
-            alert.setTitle("Delete all items in list before deleting list")
-            alert.setMessage("Sorry for the inconvenience")
+            alert.setTitle("Delete list")
+            alert.setMessage("Delete all items in list before deleting list")
 
             alert.setPositiveButton("Ok") { dialog, _ ->
                 dialog.dismiss()

@@ -7,7 +7,6 @@
     <string name="header_sub_login">Log in to get organized</string>
     <string name="add_new_task_list">Add new task list</string>
     <string name="delete_task_list">Delete task list</string>
-    <string name="delete_all_task_lists">Delete task list</string>
     <string name="add_new_task_item">Add new task item</string>
     <string name="delete_item">Delete task item</string>
     <string name="delete_all_items">Delete task item</string>

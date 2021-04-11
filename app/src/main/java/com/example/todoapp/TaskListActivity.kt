@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_task_list.*
+import kotlinx.android.synthetic.main.task_list_layout.*
 
 class TaskListActivity : AppCompatActivity() {
 
@@ -51,8 +53,6 @@ class TaskListActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         getDataFromFirebase()
-        resetFAButtons()
-        buttonViewHandler()
 
         buttonMyProfile.setOnClickListener {
             startActivity(Intent(this, MyProfileActivity::class.java))
@@ -68,10 +68,6 @@ class TaskListActivity : AppCompatActivity() {
         val buttonAddNewList = findViewById<View>(R.id.buttonAddNewTaskList) as FloatingActionButton
         buttonAddNewList.setOnClickListener {
             addNewListDialog()
-        }
-
-        buttonDeleteAllLists.setOnClickListener {
-            deleteAllLists()
         }
     }
 
@@ -131,13 +127,11 @@ class TaskListActivity : AppCompatActivity() {
 
             if (!invalidCharactersFirebase(newListTitle)) {
                 reference.child(newListTitle).setValue(taskList)
-                resetFAButtons()
             }
         }
 
         alert.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
-            resetFAButtons()
         }
 
         alert.show()
@@ -160,47 +154,6 @@ class TaskListActivity : AppCompatActivity() {
         }
 
         alert.show()
-    }
-
-    private fun deleteAllLists() {
-        val alert = AlertDialog.Builder(this)
-
-        alert.setTitle("Delete all lists")
-        alert.setMessage("Warning! This will delete ALL lists permanently.")
-
-        alert.setPositiveButton("Delete") { _, _ ->
-            reference.removeValue()
-            resetFAButtons()
-        }
-
-        alert.setNegativeButton("Cancel") { dialog, _ ->
-            dialog.dismiss()
-            resetFAButtons()
-        }
-
-        alert.show()
-    }
-
-    private fun resetFAButtons() {
-        buttonExtendedTaskList.shrink()
-        buttonDeleteAllLists.hide()
-        buttonAddNewTaskList.hide()
-    }
-
-    private fun buttonViewHandler() {
-        var isVisible = false
-
-        buttonExtendedTaskList.setOnClickListener {
-            isVisible = if (!isVisible) {
-                buttonDeleteAllLists.show()
-                buttonAddNewTaskList.show()
-                buttonExtendedTaskList.extend()
-                true
-            } else {
-                resetFAButtons()
-                false
-            }
-        }
     }
 
     private fun invalidCharactersFirebase(listName: String): Boolean {
