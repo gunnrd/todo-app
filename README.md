@@ -16,7 +16,7 @@ The app is a school project in the subject IKT205 - application development at t
 
 
 
-<img src=".\screenshots\app_icon.jpg" alt="app_icon" style="zoom:70%;" /> 
+<img src=".\screenshots\app_icon.jpg" alt="app_icon" style="zoom:30%;" /> 
 
 
 
@@ -26,7 +26,7 @@ To use the app you need to have an user account and verified email address. The 
 
 The register activity checks that the user fills in all the fields, email format is correct, password doesn't contain whitespace and that the passwords match.   The app then sends the user a verification mail to the registered email address.
 
-<img src=".\screenshots\login.jpg" alt="login" style="zoom:70%;" /> <img src=".\screenshots\register.jpg" alt="register" style="zoom:70%;" />
+<img src=".\screenshots\login.jpg" alt="login" style="zoom:30%;" /> <img src=".\screenshots\register.jpg" alt="register" style="zoom:30%;" />
 
 
 
@@ -46,7 +46,7 @@ The toolbar has two itembuttons for navigating to "my profile" activity and for 
 
 The extended floating action button expands and contain buttons for adding a new item and deleting all items. The progressbar updates dynamically when the checkboxes are clicked.
 
-<img src=".\screenshots\taskItems_light.jpg" alt="taskItems_01" style="zoom:70%;" /> <img src=".\screenshots\taskItems_light_fab.jpg" alt="taskItems_02" style="zoom:70%;" />
+<img src=".\screenshots\taskItems_light.jpg" alt="taskItems_01" style="zoom:30%;" /> <img src=".\screenshots\taskItems_light_fab.jpg" alt="taskItems_02" style="zoom:30%;" />
 
 
 
@@ -54,7 +54,7 @@ The extended floating action button expands and contain buttons for adding a new
 
 Here the user can edit the password, change the associated email address, delete their account or log out. Associated items are initially disabled until the user authenticates their account.
 
-<img src=".\screenshots\my_profile_authenticate.jpg" alt="my_profile_authenticate" style="zoom:70%;" /> <img src=".\screenshots\my_profile_authenticated.jpg" alt="my_profile_authenticated" style="zoom:70%;" />
+<img src=".\screenshots\my_profile_authenticate.jpg" alt="my_profile_authenticate" style="zoom:30%;" /> <img src=".\screenshots\my_profile_authenticated.jpg" alt="my_profile_authenticated" style="zoom:30%;" />
 
 
 
@@ -62,5 +62,19 @@ Here the user can edit the password, change the associated email address, delete
 
 For all fields for user input there are added checks for required fields and also valid and correct input for each field. For saving a new lists and list items, input are checked so that it doesn't contain characters that are incompatible entries in the database. These features are displayed with alert dialogs which has "save/ok" and "cancel" buttons. The app returns toasts for all input errors.
 
-<img src=".\screenshots\database.jpg" alt="database" style="zoom:70%;" /> 
+<img src=".\screenshots\database.jpg" alt="database" style="zoom:30%;" /> 
+
+
+
+#### Dummy account for easy testing
+
+For easy testing use the following account:
+
+Email address:	todouser1@gmail.com
+
+Password:			**todouser111111**
+
+Use same password with username in app.
+
+
 
