@@ -12,7 +12,7 @@ The app is a school project in the subject IKT205 - application development at t
 
 ## Content
 
-#### App icon
+### App icon
 
 
 
@@ -20,7 +20,7 @@ The app is a school project in the subject IKT205 - application development at t
 
 
 
-#### Login and register new user
+### Login and register new user
 
 To use the app you need to have an user account and verified email address. The storage of the to do lists in Firebase is stored under a unique user ID that is associated with the email you register with. The login activity gives the user the options to log in, get email to set new password if forgotten and register and sign up. If the user already has an account and has logged in previously, the user is forwarded directly to their to do lists.
 
@@ -30,7 +30,7 @@ The register activity checks that the user fills in all the fields, email format
 
 
 
-#### To do lists
+### To do lists
 
 The lists is shown with cards inside a scroll view. The floating action button is for adding new lists that triggers a alert dialog where the users can enter new list name or cancel.
 
@@ -42,7 +42,7 @@ The toolbar has two itembuttons for navigating to "my profile" activity and for 
 
 
 
-#### To do items
+### To do items
 
 The extended floating action button expands and contain buttons for adding a new item and deleting all items. The progressbar updates dynamically when the checkboxes are clicked.
 
@@ -50,7 +50,7 @@ The extended floating action button expands and contain buttons for adding a new
 
 
 
-#### My profile
+### My profile
 
 Here the user can edit the password, change the associated email address, delete their account or log out. Associated items are initially disabled until the user authenticates their account.
 
@@ -58,7 +58,7 @@ Here the user can edit the password, change the associated email address, delete
 
 
 
-#### Extra information
+### Extra information
 
 For all fields for user input there are added checks for required fields and also valid and correct input for each field. For saving a new lists and list items, input are checked so that it doesn't contain characters that are incompatible entries in the database. These features are displayed with alert dialogs which has "save/ok" and "cancel" buttons. The app returns toasts for all input errors.
 
@@ -66,7 +66,7 @@ For all fields for user input there are added checks for required fields and als
 
 
 
-#### Dummy account for easy testing
+### Dummy account for easy testing
 
 For easy testing use the following account:
 
