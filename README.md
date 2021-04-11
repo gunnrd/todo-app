@@ -40,9 +40,9 @@ https://appdistribution.firebase.dev/i/8ce95a62a597f51f
 </br></br>
 #### Login and register new user
 </br>
-To use the app you need to have an user account and verified email address. The storage of the to do lists in Firebase is stored under a unique user ID that is associated with the email you register with. The login activity gives the user the options to log in, get email to set new password if forgotten and register and sign up. If the user already has an account and has logged in previously, the user is forwarded directly to their to do lists.
+To use the app you need to have an user account and verified email address. The storage of the to do lists in Firebase is stored under a unique user ID that is associated with the email you register with. The login activity gives the user the options to log in, get email to set new password if forgotten and register and sign up. If the user already has an account and has logged in previously, the user is forwarded directly to their to do lists. If the user previously logged in, the app can be used as usual even if the user does not have an internet connection. With the exception of editing the user profile. When connected to the internet again, the app synchronizes changes to the database.
 
-The register activity checks that the user fills in all the fields, email format is correct, password doesn't contain whitespace and that the passwords match.   The app then sends the user a verification mail to the registered email address.
+The register activity checks that the user fills in all the fields, email format is correct, password doesn't contain whitespace and that the passwords match. The app then sends the user a verification mail to the registered email address.
 
 <img src=".\screenshots\login.jpg" alt="login"  width="30%" height="30%" /> <img src=".\screenshots\register.jpg" alt="register" width="30%" height="30%" />
 
