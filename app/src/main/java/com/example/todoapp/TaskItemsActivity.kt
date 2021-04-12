@@ -101,7 +101,7 @@ class TaskItemsActivity : AppCompatActivity(){
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.w("TaskListActivity", "loadItem:onCancelled database error", error.toException())
+                Log.w("TaskItemsActivity", "getDataFromFirebase():onCancelled database error", error.toException())
             }
         }
 
@@ -146,7 +146,9 @@ class TaskItemsActivity : AppCompatActivity(){
                 reference.child(listId).child("/itemCount").setValue(count)
             }
 
-            override fun onCancelled(error: DatabaseError) {}
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("TaskItemsActivity", "getTaskItemCount():onCancelled database error", error.toException())
+            }
         }
 
         eventListenerGetTaskItemCount = reference.child(listId).child("/listItems")
@@ -165,7 +167,7 @@ class TaskItemsActivity : AppCompatActivity(){
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.w("TaskListActivity", "loadItem:onCancelled database error", error.toException())
+                Log.w("TaskItemsActivity", "saveProgressBarStatus():onCancelled database error", error.toException())
             }
         }
 

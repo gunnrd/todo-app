@@ -29,12 +29,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        buttonRegisterNewUser.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
-        }
-
         buttonForgotPasswordMain.setOnClickListener {
             resetPassword()
+        }
+
+        buttonRegisterNewUser.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 

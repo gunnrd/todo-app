@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +19,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_task_list.*
-import kotlinx.android.synthetic.main.task_list_layout.*
 
 class TaskListActivity : AppCompatActivity() {
 
@@ -105,7 +103,7 @@ class TaskListActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.w("MainActivity", "loadItem:onCancelled database error", error.toException())
+                Log.w("TaskListActivity", "getDataFromFirebase():onCancelled database error", error.toException())
             }
         }
 
