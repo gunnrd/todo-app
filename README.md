@@ -33,6 +33,8 @@ https://appdistribution.firebase.dev/i/8ce95a62a597f51f
 
 #### App icon
 </br>
+The icon used is taken from https://www.flaticon.com/free-icons/app.
+</br>
 
 <img src=".\screenshots\app_icon.jpg" alt="app_icon"  width="30%" height="30%" /> 
 
