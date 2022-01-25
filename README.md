@@ -9,17 +9,6 @@ This is a simple app where you can create to do lists and add items within every
 The app is a school project in the subject IKT205 - application development at the University of Agder, Grimstad. It is written in Android Studio, Kotlin. The app uses Firebase realtime database with email/password authentication.
 
 
-</br></br>
-## Dummy account for easy testing
-</br>
-For easy testing use the following account:
-</br>
-Email address:	todouser1@gmail.com
-
-Password:			**todouser111111**
-
-Use same password with username in app.
-
 
 </br></br>
 ## Link for APK download via Firebase App distribution
